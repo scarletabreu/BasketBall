@@ -22,7 +22,7 @@ public class NBA
         Cities = new();
     }*/
 
-    private NBA()
+    internal NBA()
     {
         Players = new List<Player>
         {
@@ -51,7 +51,12 @@ public class NBA
             new City("CLE", "Cleveland"),
             new City("NYC", "New York"),
             new City("MIA", "Miami"),
-            new City("BOS", "Boston")
+            new City("BOS", "Boston"),
+            new City("NYC", "New York"),  
+            new City("WDC", "Washington D.C."),
+            new City("AKR", "Akron"),
+            new City("PHI", "Philadelphia"),
+            new City("CLE", "Cleveland")
         };
         
         Games = new List<Game>

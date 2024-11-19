@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\Scarlet\Downloads\LP C#\Basket\App.xaml
-3612881539
+4821263692
 
-131258687662
+151690110931
 200113036603
-Visual\Cards.xaml;Visual\MainDashboard.xaml;Visual\PlayerWindow.xaml;
+Visual\Cards.xaml;Visual\MainDashboard.xaml;Visual\PlayerDetails.xaml;Visual\PlayerWindow.xaml;
 
-True
+False
 
