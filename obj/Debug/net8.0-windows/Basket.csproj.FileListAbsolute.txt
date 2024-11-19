@@ -26,5 +26,6 @@ C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\Cards.g.
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Basket_MarkupCompile.lref
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\Cards.baml
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\PlayerWindow.g.cs
-C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\PlayerWindow.baml
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\PlayerDetails.g.cs
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\PlayerDetails.baml

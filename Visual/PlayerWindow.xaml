@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Basket.Visual"
         mc:Ignorable="d"
-        Title="PlayerWindow" Height="450" Width="800">
+        Title="PlayerWindow" WindowState="Maximized">
     <Window.Resources>
+        <!-- Estilo para el botón de menú -->
         <Style x:Key="MenuButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Black"/>
@@ -48,6 +48,116 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        
+        <!-- Estilo para ComboBox con bordes redondeados -->
+        <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Width" Value="200"/> <!-- Ajustado para un botón más ancho -->
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <!-- Borde del ComboBox con bordes redondeados -->
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="10">
+                                <Grid>
+                                    <!-- ToggleButton personalizado para abrir/cerrar el desplegable -->
+                                    <ToggleButton x:Name="ToggleButton"
+                                                  Focusable="false"
+                                                  IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                                  ClickMode="Press"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  HorizontalAlignment="Right"
+                                                  VerticalAlignment="Center"
+                                                  Width="20">
+                                        <!-- Flecha hacia abajo -->
+                                        <Path x:Name="Arrow" 
+                                              Fill="Black" 
+                                              Data="M 0 0 L 4 4 L 8 0 Z" 
+                                              HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                                    </ToggleButton>
+                                    
+                                    <!-- Contenido seleccionado -->
+                                    <ContentPresenter x:Name="ContentSite"
+                                                      IsHitTestVisible="False"
+                                                      Content="{TemplateBinding SelectionBoxItem}"
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                      Margin="3,3,30,3"
+                                                      VerticalAlignment="Center"
+                                                      HorizontalAlignment="Left"/>
+                                    
+                                    <!-- TextBox para ComboBox editable (oculto si no es editable) -->
+                                    <TextBox x:Name="PART_EditableTextBox"
+                                             Visibility="Hidden"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Center"
+                                             Margin="3,3,30,3" 
+                                             Focusable="True" 
+                                             Background="Transparent" 
+                                             IsReadOnly="{TemplateBinding IsReadOnly}"/>
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Popup para el desplegable del ComboBox -->
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True" 
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="White"
+                                            BorderThickness="1"
+                                            CornerRadius="10"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        
+                        <!-- Triggers para estados del ControlTemplate -->
+                        <ControlTemplate.Triggers>
+                            <!-- Estado deshabilitado -->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Border" Property="Background" Value="#EEEEEE"/>
+                                <Setter Property="Foreground" Value="#888888"/>
+                            </Trigger>
+                            
+                            <!-- Estado editable -->
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter Property="IsTabStop" Value="False"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <Style x:Key="FilterLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+            <Setter Property="Foreground" Value="#000000"/>
+        </Style>
+        
+        
     </Window.Resources>
     
     <Grid>
@@ -82,15 +192,39 @@
                         <TextBlock Text="HoopStats" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
                     </StackPanel>
 
-                <!-- Navigation Menu -->
-                <StackPanel Grid.Row="1">
-                    <Button x:Name="PlayerButton" Content="Jugador" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="TeamButton" Content="Equipos" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="GameButton" Content="Juegos" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="StatNButton" Content="Estadística" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="GameStatsButton" Content="Estadística Juego" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="CityButton" Content="Ciudades" Style="{StaticResource MenuButtonStyle}"/>
-                </StackPanel>
+                    <!-- Filter Menu -->
+                    <StackPanel Grid.Row="1" Margin="10">
+                        <!-- Filter by Team -->
+                        <TextBlock Text="Filtrar por Nombre:" FontWeight="Bold" Margin="5,5,0,5" Style="{StaticResource FilterLabelStyle}"/>
+                        <Grid>
+                            <ComboBox x:Name="NameFilter" HorizontalAlignment="Left" Style="{StaticResource RoundedComboBoxStyle}"/>
+                        </Grid>
+
+                        
+                        <TextBlock Text="Filtrar por Equipo:" FontWeight="Bold" Margin="5,5,0,5" Style="{StaticResource FilterLabelStyle}"/>
+                        <Grid>
+                            <ComboBox x:Name="TeamFilter" HorizontalAlignment="Left" Style="{StaticResource RoundedComboBoxStyle}"/>
+                        </Grid>
+
+
+                        <!-- Filter by City -->
+                        <TextBlock Text="Filtrar por Ciudad:" FontWeight="Bold" Margin="5,5,0,5" Style="{StaticResource FilterLabelStyle}"/>
+                        <Grid>
+                            <ComboBox x:Name="CityFilter" HorizontalAlignment="Left" Style="{StaticResource RoundedComboBoxStyle}"/>
+                        </Grid>
+
+                        
+                        <TextBlock Text="Filtrar por Número:" FontWeight="Bold" Margin="5,5,0,5" Style="{StaticResource FilterLabelStyle}"/>
+                        <Grid>
+                            <ComboBox x:Name="NumberFilter" HorizontalAlignment="Left" Style="{StaticResource RoundedComboBoxStyle}"/>
+                        </Grid>
+
+                        
+                        <Button x:Name="ApplyFilterButton" Content="Aplicar filtros" Style="{StaticResource MenuButtonStyle}" Margin="5,20,5,5" Click="ApplyFilterButton_OnClick"/>
+                        <!-- Clear Filters Button -->
+                        <Button x:Name="ClearFiltersButton" Content="Limpiar filtros" Style="{StaticResource MenuButtonStyle}" Margin="5,20,5,5" Click="ClearFiltersButton_Click"/>
+                    </StackPanel>
+
 
                 <!-- Logout Button -->
                 <Button Grid.Row="2" x:Name="CloseButton" Content="Cerrar Sesión" Style="{StaticResource MenuButtonStyle}" Click="CloseButton_OnClick"/>
@@ -98,7 +232,7 @@
         </Border>
         
         <!-- Main Content -->
-        <Grid Grid.Column="1" Margin="10">
+        <Grid x:Name="MainContent" Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -114,39 +248,10 @@
             <ScrollViewer Grid.Row="1" 
                           VerticalScrollBarVisibility="Auto" 
                           HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel Orientation="Horizontal" 
+                <WrapPanel x:Name="CardsContainer"
+                           Orientation="Horizontal" 
                            Margin="5">
-                    <!-- Ejemplo de cards -->
-                    <local:Cards Margin="5"
-                                 Width="280"
-                                 Heading="Michael Jordan"
-                                 Description="Escolta - Chicago Bulls"
-                                 ActionButtonText="Ver detalles"/>
-                
-                    <local:Cards Margin="5"
-                                 Width="280"
-                                 Heading="LeBron James"
-                                 Description="Alero - Los Angeles Lakers"
-                                 ActionButtonText="Ver detalles"/>
-                
-                    <local:Cards Margin="5"
-                                 Width="280"
-                                 Heading="Stephen Curry"
-                                 Description="Base - Golden State Warriors"
-                                 ActionButtonText="Ver detalles"/>
-                
-                    <local:Cards Margin="5"
-                                 Width="280"
-                                 Heading="Kevin Durant"
-                                 Description="Alero - Phoenix Suns"
-                                 ActionButtonText="Ver detalles"/>
-                    <local:Cards Margin="5"
-                                 Width="280"
-                                 Heading="Kevin Durant"
-                                 Description="Alero - Phoenix Suns"
-                                 ActionButtonText="Ver detalles"/>
-
-                    <!-- Puedes agregar más cards aquí -->
+                    <!-- Las cards se cargarán dinámicamente desde el code-behind -->
                 </WrapPanel>
             </ScrollViewer>
         </Grid>

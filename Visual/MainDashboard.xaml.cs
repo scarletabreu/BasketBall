@@ -7,6 +7,7 @@ public partial class MainDashboard : Window
     public MainDashboard()
     {
         InitializeComponent();
+        this.Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Scarlet\\Downloads\\Basket.png"));
     }
     
     private void Cards_ActionClick(object sender, RoutedEventArgs e)

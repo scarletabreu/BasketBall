@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="Basket.Visual.PlayerDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        Height="600" Width="500"
+        Background="#F0F0F0">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Jugador •" FontWeight="Bold"/>
+            <TextBlock x:Name="FullNameTextBlockHeader" Text="nombre jugador" Foreground="#666666"/>
+        </StackPanel>
+
+        <!-- Información del jugador -->
+        <Border Grid.Row="1" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Ellipse Width="40" Height="40">
+                    <Ellipse.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#eeaeca" Offset="0"/>
+                            <GradientStop Color="#94bbe9" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Ellipse.Fill>
+                    <Ellipse.Effect>
+                        <DropShadowEffect ShadowDepth="2" Direction="270" Color="#22000000" BlurRadius="3"/>
+                    </Ellipse.Effect>
+                </Ellipse>
+
+                <TextBlock x:Name="PlayerInitials" Text="Initial" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <TextBlock x:Name="FullNameTextBlockInfo" Text="nombre jugador" FontWeight="Bold"/>
+                    <TextBlock x:Name="StatusTextBlock" Text="estado" Foreground="#666666"/>
+                </StackPanel>
+                <TextBlock Grid.Column="2" x:Name="PositionTextBlock" Text="Pos" Background="Transparent"/>
+            </Grid>
+        </Border>
+
+        <!-- Notas del jugador -->
+        <Border Grid.Row="2" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock x:Name="ObservationsLabel" Text="Notas" Margin="0,0,0,5"/>
+                <TextBlock Text="Editar" Foreground="Blue"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Información del equipo -->
+        <Border Grid.Row="3" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="EQUIPO" Foreground="#666666"/>
+                    <TextBlock x:Name="TeamTextBlock" Text="nombre equipo" FontWeight="Bold"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="FECHA" Foreground="#666666"/>
+                    <TextBlock x:Name="DateTextBlock" Text="fecha" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Información de pago -->
+        <Border Grid.Row="4" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Pago" FontWeight="Bold"/>
+                    <TextBlock x:Name="PaymentLabel" Text="Factura #10102" Foreground="#666666"/>
+                </StackPanel>
+                <Button Grid.Column="1" x:Name="PaymentCheck" Content="PENDIENTE" Background="#FFCCCC" Foreground="#FF0000" BorderThickness="0" Padding="5,2"/>
+            </Grid>
+        </Border>
+
+        <!-- Información general -->
+        <Border Grid.Row="5" Background="White" CornerRadius="5" Padding="10" Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="Información general" FontWeight="Bold" Margin="0,0,0,10"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="NOMBRE COMPLETO" Foreground="#666666"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="FullNameTextBlockGeneral" Text="nombre completo" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="TELÉFONO" Foreground="#666666"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="NumberTextBlock" Text="número teléfono" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="EDAD" Foreground="#666666" Margin="0,10,0,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" x:Name="AgeTextBlockGeneral" Text="edad" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="CIUDAD" Foreground="#666666" Margin="0,10,0,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="CityTextBlock" Text="dirección" FontWeight="Bold"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Botones de acción -->
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Cerrar" Background="#ff2c2c" Foreground="White" Padding="10,5" Margin="0,0,10,0" Click="CancelButton_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
