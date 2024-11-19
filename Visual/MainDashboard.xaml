@@ -1,0 +1,197 @@
+﻿<Window x:Class="Basket.Visual.MainDashboard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="BasketBall" Height="600" Width="1000"
+        Background="#F5F6FA">
+    <Window.Resources>
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#AA423A"/> <!-- Color inicial del borde -->
+            <Setter Property="Width" Value="200"/> <!-- Ajustado para un botón más ancho -->
+            <Setter Property="Height" Value="40"/>
+            
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/> <!-- Alineación del texto a la izquierda -->
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="10,5"/> <!-- Añadido margen para separar los botones -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="10" 
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              Margin="20,0,0,0"/> <!-- Añadido margen izquierdo para el texto -->
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+            <!-- Triggers para cambiar color en diferentes estados -->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DB783E"/> <!-- Color de fondo al pasar el mouse -->
+                    <Setter Property="BorderBrush" Value="#AA423A"/> <!-- Color del borde al pasar el mouse -->
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#C0C9FE"/> <!-- Color de fondo para botones deshabilitados -->
+                    <Setter Property="BorderBrush" Value="#A0A0A0"/> <!-- Color del borde para botones deshabilitados -->
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Sidebar -->
+        <Border Grid.Column="0" CornerRadius="15" Margin="10">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#F2E3D8" Offset="0"/>
+                        <GradientStop Color="#DB783E" Offset="0.8"/>
+                        <GradientStop Color="#AA423A" Offset="1"/> <!-- Color ligeramente más oscuro para hover -->
+                    </LinearGradientBrush>
+                </Border.Background>
+            
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Margin="0,20,0,40" HorizontalAlignment="Center">
+    
+                        <!-- SVG como imagen -->
+                        <Image Source="C:\\Users\\Scarlet\\Downloads\\Basket.png" Width="80" Height="80"/>
+
+                        <TextBlock Text="Bienvenido A" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <TextBlock Text="HoopStats" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                <!-- Navigation Menu -->
+                <StackPanel Grid.Row="1">
+                    <Button x:Name="PlayerButton" Content="Jugador" Style="{StaticResource MenuButtonStyle}" Click="PlayerButton_OnClick"/>
+                    <Button x:Name="TeamButton" Content="Equipos" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button x:Name="GameButton" Content="Juegos" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button x:Name="StatNButton" Content="Estadística" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button x:Name="GameStatsButton" Content="Estadística Juego" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button x:Name="CityButton" Content="Ciudades" Style="{StaticResource MenuButtonStyle}"/>
+                </StackPanel>
+
+                <!-- Logout Button -->
+                <Button Grid.Row="2" x:Name="CloseButton" Content="Cerrar Sesión" Style="{StaticResource MenuButtonStyle}" Click="CloseButton_OnClick"/>
+                </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header with Tabs -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,20">
+                <TextBlock Text="Diaria" Margin="10,0" Foreground="#666666"/>
+                <TextBlock Text="Semanal" Margin="10,0" Foreground="#666666"/>
+                <TextBlock Text="Mensual" Margin="10,0" Foreground="#DB783E"/>
+                <TextBlock Text="Anual" Margin="10,0" Foreground="#666666"/>
+            </StackPanel>
+
+            <!-- Chart Section -->
+            <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                <Grid Height="300">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Equipos" FontSize="20" FontWeight="Bold"/>
+                            <TextBlock Text="Ganancias del Mes Actual" FontSize="12" Foreground="#666666"/>
+                        </StackPanel>
+                        <StackPanel Margin="40,0,0,0">
+                            <TextBlock Text="Cantidad" FontSize="20" FontWeight="Bold"/>
+                            <TextBlock Text="Ventas del Mes Actual" FontSize="12" Foreground="#666666"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Chart placeholder - In real implementation, use a proper charting control -->
+                    <lvc:CartesianChart Grid.Row="2" Height="200" Margin="0,20,0,0">
+                        <lvc:CartesianChart.Series>
+                            <!-- Valores de Prueba -->
+                            <lvc:LineSeries Values="10,13,20,15,18,25,28,20" Stroke="#DB783E" Fill="#DB783E" />
+                            <lvc:LineSeries Values="15,10,15,20,25,20,15,23" Stroke="#F2E3D8" Fill="#F2E3D8" />
+                        </lvc:CartesianChart.Series>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic" />
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+                </Grid>
+            </Border>
+
+            <!-- Bottom Section -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Games List -->
+                <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="20">
+                    <StackPanel>
+                        <!-- Título de la sección -->
+                        <TextBlock Text="Lista de Juegos" FontSize="16" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,10"/>
+                        <!-- Contenido de la lista -->
+                        <ListView BorderThickness="0">
+                            <ListViewItem>Game 1</ListViewItem>
+                            <ListViewItem>Game 2</ListViewItem>
+                        </ListView>
+                    </StackPanel>
+                </Border>
+
+
+                <!-- Statistics Cards -->
+                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="Jugador Con Más Puntos" FontSize="14" Foreground="#666666"/>
+                            <TextBlock x:Name="PlayerName" Text="PlayerName" FontSize="24" Foreground="#FF69B4"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="Equipo Con Más Juegos Ganados" FontSize="14" Foreground="#666666"/>
+                            <TextBlock x:Name="TeamName" Text="TeamName" FontSize="24" Foreground="#8A2BE2"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Juegos Actuales" FontSize="14" Foreground="#666666"/>
+                            <TextBlock x:Name="GameName" Text="Games" FontSize="24" Foreground="#FFD700"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
