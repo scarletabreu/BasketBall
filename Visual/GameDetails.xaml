@@ -1,10 +1,10 @@
-﻿<UserControl x:Class="Basket.Visual.PlayerDetails"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        mc:Ignorable="d"
-        Height="600" Width="500"
+﻿<UserControl x:Class="Basket.Visual.GameDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+        Height="450" Width="500"
         Background="#F0F0F0">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -19,8 +19,8 @@
 
         <!-- Cabecera -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-            <TextBlock Text="Jugador • " FontWeight="Bold"/>
-            <TextBlock x:Name="FullNameTextBlockHeader" Text="nombre jugador" Foreground="#666666"/>
+            <TextBlock Text="Juego • " FontWeight="Bold"/>
+            <TextBlock x:Name="GameHeader" Text="nombre juego" Foreground="#666666"/>
         </StackPanel>
 
         <!-- Información del jugador -->
@@ -43,12 +43,11 @@
                     </Ellipse.Effect>
                 </Ellipse>
 
-                <TextBlock x:Name="PlayerInitials" Text="Initial" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBlock x:Name="GameInitials" Text="Initial" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                    <TextBlock x:Name="FullNameTextBlockInfo" Text="nombre jugador" FontWeight="Bold"/>
+                    <TextBlock x:Name="GameInfo" Text="nombre juego" FontWeight="Bold"/>
                     <TextBlock x:Name="StatusTextBlock" Text="estado" Foreground="#666666"/>
                 </StackPanel>
-                <TextBlock Grid.Column="2" x:Name="PositionTextBlock" Text="Pos" Background="Transparent"/>
             </Grid>
         </Border>
 
@@ -61,12 +60,12 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel>
-                    <TextBlock Text="EQUIPO" Foreground="#666666"/>
-                    <TextBlock x:Name="TeamTextBlock" Text="nombre equipo" FontWeight="Bold"/>
+                    <TextBlock Text="EQUIPO LOCAL" Foreground="#666666"/>
+                    <TextBlock x:Name="LocalTeamBlock" Text="nombre equipo" FontWeight="Bold"/>
                 </StackPanel>
                 <StackPanel Grid.Column="2">
-                    <TextBlock Text="FECHA" Foreground="#666666"/>
-                    <TextBlock x:Name="DateTextBlock" Text="fecha" FontWeight="Bold"/>
+                    <TextBlock Text="EQUIPO VISITANTE" Foreground="#666666"/>
+                    <TextBlock x:Name="VisitorTextBlock" Text="fecha" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -86,20 +85,21 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="NOMBRE COMPLETO" Foreground="#666666"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="FullNameTextBlockGeneral" Text="nombre completo" FontWeight="Bold"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="NÚMERO" Foreground="#666666"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="NumberTextBlock" Text="número teléfono" FontWeight="Bold"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="EDAD" Foreground="#666666" Margin="0,10,0,0"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" x:Name="AgeTextBlockGeneral" Text="edad" FontWeight="Bold"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="CIUDAD" Foreground="#666666" Margin="0,10,0,0"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="CityTextBlock" Text="dirección" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="EQUIPO LOCAL" Foreground="#666666"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" x:Name="localTeamInfo" Text="nombre completo" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="EQUIPO VISITANTE" Foreground="#666666"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="VisitedTeamInfo" Text="número teléfono" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="DESCRIPCION" Foreground="#666666" Margin="0,10,0,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" x:Name="descriptionInfo" Text="edad" FontWeight="Bold"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="FECHA" Foreground="#666666" Margin="0,10,0,0"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="dateInfo" Text="dirección" FontWeight="Bold"/>
                 </Grid>
             </StackPanel>
         </Border>
 
         <!-- Botones de acción -->
         <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Mostrar Tablero" Background="#007ACC" Foreground="White" Padding="10,5" Margin="0,0,10,0" Click="ShowProcedure_Click"/>
             <Button Content="Cerrar" Background="#ff2c2c" Foreground="White" Padding="10,5" Margin="0,0,10,0" Click="CancelButton_Click"/>
         </StackPanel>
     </Grid>

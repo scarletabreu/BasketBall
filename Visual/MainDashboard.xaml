@@ -86,8 +86,8 @@
                 <!-- Navigation Menu -->
                 <StackPanel Grid.Row="1">
                     <Button x:Name="PlayerButton" Content="Jugador" Style="{StaticResource MenuButtonStyle}" Click="PlayerButton_OnClick"/>
-                    <Button x:Name="TeamButton" Content="Equipos" Style="{StaticResource MenuButtonStyle}"/>
-                    <Button x:Name="GameButton" Content="Juegos" Style="{StaticResource MenuButtonStyle}"/>
+                    <Button x:Name="TeamButton" Content="Equipos" Style="{StaticResource MenuButtonStyle}" Click="TeamButton_OnClick"/>
+                    <Button x:Name="GameButton" Content="Juegos" Style="{StaticResource MenuButtonStyle}" Click="GameButton_OnClick"/>
                     <Button x:Name="StatNButton" Content="Estadística" Style="{StaticResource MenuButtonStyle}"/>
                     <Button x:Name="GameStatsButton" Content="Estadística Juego" Style="{StaticResource MenuButtonStyle}"/>
                     <Button x:Name="CityButton" Content="Ciudades" Style="{StaticResource MenuButtonStyle}"/>

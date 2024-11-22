@@ -26,4 +26,16 @@ public partial class MainDashboard : Window
     {
         Close();
     }
+
+    private void TeamButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        TeamWindow teamWindow = new();
+        teamWindow.Show();
+    }
+
+    private void GameButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        GameWindow gameWindow = new();
+        gameWindow.Show();
+    }
 }
