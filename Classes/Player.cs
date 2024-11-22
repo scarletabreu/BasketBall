@@ -25,6 +25,7 @@ public class Player
         IdTeam = idTeam;
     }
     
+
     public string GetIdPlayer()
     {
         return IdPlayer;

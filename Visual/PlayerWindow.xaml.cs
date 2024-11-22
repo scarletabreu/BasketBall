@@ -2,18 +2,21 @@
 using System.Windows.Controls;
 using Basket.Controller; // Asegúrate de tener el using correcto para tu controlador
 using Basket.Classes;
+using SharpVectors.Converters;
+using System.Windows.Media.Imaging;
 
 namespace Basket.Visual
 {
     public partial class PlayerWindow : Window
     {
-        private readonly NBA _nbaController; 
+        private readonly NBA _nbaController;
 
         public PlayerWindow()
         {
             InitializeComponent();
-            this.Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Scarlet\\Downloads\\Basket.png"));
-            _nbaController = new NBA(); 
+            this.Icon = new System.Windows.Media.Imaging.BitmapImage(
+                new Uri("C:\\Users\\Scarlet\\Downloads\\Basket.png"));
+            _nbaController = new NBA();
             LoadPlayerCards();
             LoadFilters();
         }
@@ -21,9 +24,8 @@ namespace Basket.Visual
         private void LoadPlayerCards()
         {
             var wrapPanel = CardsContainer;
-            wrapPanel.Children.Clear(); // Limpia las cards existentes
+            wrapPanel.Children.Clear();
 
-            // Obtiene la lista de jugadores del controlador
             var players = _nbaController.GetPlayers();
             var teams = _nbaController.GetTeams();
 
@@ -49,7 +51,6 @@ namespace Basket.Visual
                 };
 
                 card.ActionClick += (s, e) => ShowPlayerDetails(player);
-
                 wrapPanel.Children.Add(card);
             }
         }
@@ -57,20 +58,24 @@ namespace Basket.Visual
 
         private void ShowPlayerDetails(Player player)
         {
-            // Obtener el nombre del equipo y la ciudad con una verificación de nulo
             var city = _nbaController.GetCities().FirstOrDefault(c => c.GetIdCity() == player.GetCity());
             var team = _nbaController.GetTeams().FirstOrDefault(t => t.GetIdTeam() == player.GetIdTeam());
 
             var playerDetails = new PlayerDetails
             {
-                Name = $"{player.GetName()} {player.GetLastName()}",     
-                FullName = $"{player.GetName()} {player.GetSecondName()} {player.GetLastName()} {player.GetSecondLastName()}",
-                FullNameGeneral = $"{player.GetName()} {player.GetSecondName()} {player.GetLastName()} {player.GetSecondLastName()}",
+                Name = $"{player.GetName()} {player.GetLastName()}",
+                FullName =
+                    $"{player.GetName()} {player.GetSecondName()} {player.GetLastName()} {player.GetSecondLastName()}",
+                FullNameGeneral =
+                    $"{player.GetName()} {player.GetSecondName()} {player.GetLastName()} {player.GetSecondLastName()}",
                 BirthDay = player.GetBirthDay().ToString("dd/MM/yyyy"),
                 Number = player.GetNumber().ToString(),
-                City = city?.GetName() ?? "Sin ciudad",  // Verifica que la ciudad exista
-                Team = team?.Name ?? "Sin equipo",  // Verifica que el equipo exista
-                Age = (DateTime.Now.Year - player.GetBirthDay().Year).ToString()
+                City = city?.GetName() ?? "Sin ciudad",
+                Team = team?.Name ?? "Sin equipo",
+                Age = (DateTime.Now.Year - player.GetBirthDay().Year).ToString(),
+                Initials = $"{player.GetName()[0]}{player.GetLastName()[0]}",
+                num = player.GetNumber().ToString()
+
             };
 
             // Crear la ventana de detalles
@@ -89,94 +94,73 @@ namespace Basket.Visual
         {
             Close();
         }
-        
+
         private void LoadFilters()
         {
-            // Obtener los equipos del controlador
             var teams = _nbaController.GetTeams();
 
-            // Agregar un item vacío para indicar que no hay filtro seleccionado
-            TeamFilter.Items.Add(new ComboBoxItem {Content = "Todos", Tag = ""});
-
-            // Agregar los equipos al ComboBox
+            TeamFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
             foreach (var team in teams)
             {
-                TeamFilter.Items.Add(new ComboBoxItem {Content = team.Name, Tag = team.GetIdTeam()});
+                TeamFilter.Items.Add(new ComboBoxItem { Content = team.Name, Tag = team.GetIdTeam() });
             }
 
-            // Seleccionar el primer item por defecto
             TeamFilter.SelectedIndex = 0;
-            
-            var numbers = _nbaController.GetPlayers().Select(player => player.GetNumber().ToString()).Distinct().ToList();
-            
-            // Agregar un item vacío para indicar que no hay filtro seleccionado
-            NumberFilter.Items.Add(new ComboBoxItem {Content = "Todos", Tag = ""});
-            
-            // Agregar los números al ComboBox
-            
+
+            var numbers = _nbaController.GetPlayers().Select(player => player.GetNumber().ToString()).Distinct()
+                .ToList();
+
+            NumberFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
             foreach (var number in numbers)
             {
-                NumberFilter.Items.Add(new ComboBoxItem {Content = number, Tag = number});
+                NumberFilter.Items.Add(new ComboBoxItem { Content = number, Tag = number });
             }
-            
-            // Seleccionar el primer item por defecto
+
             NumberFilter.SelectedIndex = 0;
-            
+
             var names = _nbaController.GetPlayers().Select(player => player.Name).Distinct().ToList();
-            
-            // Agregar un item vacío para indicar que no hay filtro seleccionado
-            NameFilter.Items.Add(new ComboBoxItem {Content = "Todos", Tag = ""});
-            
-            // Agregar los nombres al ComboBox
-            
+
+            NameFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
             foreach (var name in names)
             {
-                NameFilter.Items.Add(new ComboBoxItem {Content = name, Tag = name});
+                NameFilter.Items.Add(new ComboBoxItem { Content = name, Tag = name });
             }
-            
-            // Seleccionar el primer item por defecto
+
             NameFilter.SelectedIndex = 0;
-            
+
             var cities = _nbaController.GetCities().Select(city => city.GetName()).Distinct().ToList();
-            
-            // Agregar un item vacío para indicar que no hay filtro seleccionado
-            
-            CityFilter.Items.Add(new ComboBoxItem {Content = "Todos", Tag = ""});
-            
-            // Agregar las ciudades al ComboBox
-            
+
+            CityFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
             foreach (var city in cities)
             {
-                CityFilter.Items.Add(new ComboBoxItem {Content = city, Tag = city});
+                CityFilter.Items.Add(new ComboBoxItem { Content = city, Tag = city });
             }
-            
-            // Seleccionar el primer item por defecto
+
             CityFilter.SelectedIndex = 0;
         }
-        
+
         private void ApplyFilterButton_OnClick(object sender, RoutedEventArgs e)
         {
-            // Obtener los filtros ingresados por el usuario
             var nameFilter = NameFilter.Text.ToLower();
-            var selectedTeamName = (TeamFilter.SelectedItem as ComboBoxItem)?.Content.ToString().ToLower();  // Obtener el nombre del equipo
+            var selectedTeamName = (TeamFilter.SelectedItem as ComboBoxItem)?.Content.ToString().ToLower();
             var numberFilter = NumberFilter.Text;
-            var selectedCityName = (CityFilter.SelectedItem as ComboBoxItem)?.Content.ToString().ToLower();  // Obtener el nombre de la ciudad
+            var selectedCityName = (CityFilter.SelectedItem as ComboBoxItem)?.Content.ToString().ToLower();
 
             // Filtrar jugadores
             var filteredPlayers = _nbaController.GetPlayers()
                 .Where(player =>
-                        (string.IsNullOrEmpty(nameFilter) || player.GetName().ToLower().Contains(nameFilter)) &&
-                        (string.IsNullOrEmpty(selectedTeamName) || GetTeamNameById(player.GetIdTeam()).ToLower().Contains(selectedTeamName)) &&  // Filtrar por el nombre del equipo
-                        (string.IsNullOrEmpty(numberFilter) || player.GetNumber().ToString() == numberFilter) &&  // Corregir el error de paréntesis
-                        (string.IsNullOrEmpty(selectedCityName) || GetCityNameById(player.GetCity()).ToLower().Contains(selectedCityName))  // Filtrar por el nombre de la ciudad
+                    (string.IsNullOrEmpty(nameFilter) || player.GetName().ToLower().Contains(nameFilter)) &&
+                    (string.IsNullOrEmpty(selectedTeamName) ||
+                     GetTeamNameById(player.GetIdTeam()).ToLower().Contains(selectedTeamName)) &&
+                    (string.IsNullOrEmpty(numberFilter) || player.GetNumber().ToString() == numberFilter) &&
+                    (string.IsNullOrEmpty(selectedCityName) ||
+                     GetCityNameById(player.GetCity()).ToLower().Contains(selectedCityName))
                 )
                 .ToList();
 
-            // Actualizar las cards con los jugadores filtrados
             UpdatePlayerCards(filteredPlayers);
         }
 
-        // Función auxiliar para obtener el nombre del equipo por su ID
         private string GetTeamNameById(string teamId)
         {
             var team = _nbaController.GetTeams().FirstOrDefault(t => t.GetIdTeam() == teamId);
@@ -192,15 +176,15 @@ namespace Basket.Visual
 
         private void UpdatePlayerCards(List<Player> players)
         {
-            // Obtén el WrapPanel
             var wrapPanel = CardsContainer;
-            wrapPanel.Children.Clear(); // Limpia las cards existentes
+            wrapPanel.Children.Clear();
 
             var teams = _nbaController.GetTeams();
 
             foreach (var player in players)
             {
-                var teamName = teams.FirstOrDefault(team => team.GetIdTeam() == player.GetIdTeam())?.GetName() ?? "Sin equipo";
+                var teamName = teams.FirstOrDefault(team => team.GetIdTeam() == player.GetIdTeam())?.GetName() ??
+                               "Sin equipo";
 
                 var card = new Cards
                 {
@@ -224,5 +208,35 @@ namespace Basket.Visual
             CityFilter.SelectedIndex = -1;
             LoadPlayerCards();
         }
+        
+        private void OnPlayerCreated(Player newPlayer)
+        {
+            var wrapPanel = CardsContainer;
+            var teams = _nbaController.GetTeams();
+
+            var teamName = teams.FirstOrDefault(team => team.GetIdTeam() == newPlayer.GetIdTeam())?.GetName() ?? "Sin equipo";
+
+            var card = new Cards
+            {
+                Width = 280,
+                Margin = new Thickness(5),
+                Heading = $"{newPlayer.GetName()} {newPlayer.GetLastName()}",
+                Description = $"{newPlayer.GetNumber()} - {teamName}",
+                ActionButtonText = "Ver detalles"
+            };
+
+            card.ActionClick += (s, e) => ShowPlayerDetails(newPlayer);
+            wrapPanel.Children.Add(card);
+        }
+
+
+
+        private void CreatePlayerButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var createPlayer = new CreatePlayer();
+            createPlayer.PlayerAdded += OnPlayerCreated;
+            createPlayer.ShowDialog();
+        }
+
     }
 }

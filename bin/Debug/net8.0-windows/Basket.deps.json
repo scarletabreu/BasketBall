@@ -8,7 +8,9 @@
     ".NETCoreApp,Version=v8.0": {
       "Basket/1.0.0": {
         "dependencies": {
-          "LiveCharts.Wpf": "0.9.7"
+          "LiveCharts.Wpf": "0.9.7",
+          "SharpVectors": "1.8.4.2",
+          "SharpVectors.Wpf": "1.8.4.2"
         },
         "runtime": {
           "Basket.dll": {}
@@ -32,7 +34,44 @@
             "fileVersion": "0.9.7.0"
           }
         }
-      }
+      },
+      "SharpVectors/1.8.4.2": {
+        "runtime": {
+          "lib/net8.0-windows7.0/SharpVectors.Converters.Wpf.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Core.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Css.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Dom.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Model.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Rendering.Gdi.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Rendering.Wpf.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          },
+          "lib/net8.0-windows7.0/SharpVectors.Runtime.Wpf.dll": {
+            "assemblyVersion": "1.8.4.2",
+            "fileVersion": "1.8.4.2"
+          }
+        }
+      },
+      "SharpVectors.Wpf/1.8.4.2": {}
     }
   },
   "libraries": {
@@ -54,6 +93,20 @@
       "sha512": "sha512-lv6YZoK0B4yWykMq5b9grZXtIbTj+OWu4sVN9GDpdgV6zffu64m4d5CW8KSjfSl9rB8VU649x1NZvhoU67hCDg==",
       "path": "livecharts.wpf/0.9.7",
       "hashPath": "livecharts.wpf.0.9.7.nupkg.sha512"
+    },
+    "SharpVectors/1.8.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-x0ieFIl0MKEwxtYUFzOh7ch35gPkU8eEgfhwk8oE4cs8JejnZ2MVFgB5bILFNbatO934uby4c5MiV9k9olaoBg==",
+      "path": "sharpvectors/1.8.4.2",
+      "hashPath": "sharpvectors.1.8.4.2.nupkg.sha512"
+    },
+    "SharpVectors.Wpf/1.8.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PNxLkMBJnV8A+6yH9OqOlhLJegvWP/dvh0rAJp2l0kcrR+rB4R2tQ9vhUqka+UilH4atN8T6zvjDOizVyfz2Ng==",
+      "path": "sharpvectors.wpf/1.8.4.2",
+      "hashPath": "sharpvectors.wpf.1.8.4.2.nupkg.sha512"
     }
   }
 }

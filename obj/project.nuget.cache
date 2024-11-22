@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "oTYUxYNXzUE=",
+  "dgSpecHash": "7tviGvtIm+M=",
   "success": true,
   "projectFilePath": "C:\\Users\\Scarlet\\Downloads\\LP C#\\Basket\\Basket.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Scarlet\\.nuget\\packages\\livecharts\\0.9.7\\livecharts.0.9.7.nupkg.sha512",
-    "C:\\Users\\Scarlet\\.nuget\\packages\\livecharts.wpf\\0.9.7\\livecharts.wpf.0.9.7.nupkg.sha512"
+    "C:\\Users\\Scarlet\\.nuget\\packages\\livecharts.wpf\\0.9.7\\livecharts.wpf.0.9.7.nupkg.sha512",
+    "C:\\Users\\Scarlet\\.nuget\\packages\\sharpvectors\\1.8.4.2\\sharpvectors.1.8.4.2.nupkg.sha512",
+    "C:\\Users\\Scarlet\\.nuget\\packages\\sharpvectors.wpf\\1.8.4.2\\sharpvectors.wpf.1.8.4.2.nupkg.sha512"
   ],
   "logs": [
     {

@@ -221,8 +221,9 @@
 
                         
                         <Button x:Name="ApplyFilterButton" Content="Aplicar filtros" Style="{StaticResource MenuButtonStyle}" Margin="5,20,5,5" Click="ApplyFilterButton_OnClick"/>
-                        <!-- Clear Filters Button -->
                         <Button x:Name="ClearFiltersButton" Content="Limpiar filtros" Style="{StaticResource MenuButtonStyle}" Margin="5,20,5,5" Click="ClearFiltersButton_Click"/>
+                        
+                        <Button x:Name="CreatePlayerButton" Content="Crear un Jugador" Style="{StaticResource MenuButtonStyle}" Margin="5,20,5,5" Click="CreatePlayerButton_OnClick"/>
                     </StackPanel>
 
 

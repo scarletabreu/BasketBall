@@ -58,6 +58,24 @@ namespace Basket.Visual
             get { return AgeTextBlockGeneral.Text; }
             set { AgeTextBlockGeneral.Text = value; }
         }
+        
+        public string Initials
+        {
+            get { return PlayerInitials.Text; }
+            set { PlayerInitials.Text = value; }
+        }
+        
+       /* public string Image
+        {
+            get { return PlayerImage.Source.ToString(); }
+            set { PlayerImage.Source = new BitmapImage(new Uri(value)); }
+        }*/
+
+       public string num
+       {
+           get { return PositionTextBlock.Text; }
+              set { PositionTextBlock.Text = value; }
+       }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
