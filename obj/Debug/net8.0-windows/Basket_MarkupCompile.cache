@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\Scarlet\Downloads\LP C#\Basket\App.xaml
-11-1350335877
+12-171183931
 
-22-739690441
+231007337289
 2081521647101
-Visual\Cards.xaml;Visual\CreateGame.xaml;Visual\CreatePlayer.xaml;Visual\CreateTeam.xaml;Visual\GameDetails.xaml;Visual\GameWindow.xaml;Visual\MainDashboard.xaml;Visual\PlayerDetails.xaml;Visual\PlayerWindow.xaml;Visual\TeamDetails.xaml;Visual\TeamWindow.xaml;
+Visual\Cards.xaml;Visual\CityWindow.xaml;Visual\CreateGame.xaml;Visual\CreatePlayer.xaml;Visual\CreateTeam.xaml;Visual\GameDetails.xaml;Visual\GameWindow.xaml;Visual\MainDashboard.xaml;Visual\PlayerDetails.xaml;Visual\PlayerWindow.xaml;Visual\TeamDetails.xaml;Visual\TeamWindow.xaml;
 
 False
 

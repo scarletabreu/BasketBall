@@ -38,4 +38,10 @@ public partial class MainDashboard : Window
         GameWindow gameWindow = new();
         gameWindow.Show();
     }
+
+    private void CityButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        CityWindow cityWindow = new();
+        cityWindow.Show();
+    }
 }

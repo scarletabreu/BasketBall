@@ -37,7 +37,7 @@ namespace Basket.Visual
                 {
                     if (team.GetIdTeam() == player.GetIdTeam())
                     {
-                        teamName = team.Name;
+                        teamName = team.GetName();
                     }
                 }
 
@@ -45,7 +45,7 @@ namespace Basket.Visual
                 {
                     Width = 280,
                     Margin = new Thickness(5),
-                    Heading = $"{player.Name} {player.LastName}",
+                    Heading = $"{player.Name} {player.GetLastName()}",
                     Description = $"{player.GetNumber()} - {teamName}",
                     ActionButtonText = "Ver detalles"
                 };
@@ -71,7 +71,7 @@ namespace Basket.Visual
                 BirthDay = player.GetBirthDay().ToString("dd/MM/yyyy"),
                 Number = player.GetNumber().ToString(),
                 City = city?.GetName() ?? "Sin ciudad",
-                Team = team?.Name ?? "Sin equipo",
+                Team = team?.GetName() ?? "Sin equipo",
                 Age = (DateTime.Now.Year - player.GetBirthDay().Year).ToString(),
                 Initials = $"{player.GetName()[0]}{player.GetLastName()[0]}",
                 num = player.GetNumber().ToString()
@@ -102,7 +102,7 @@ namespace Basket.Visual
             TeamFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
             foreach (var team in teams)
             {
-                TeamFilter.Items.Add(new ComboBoxItem { Content = team.Name, Tag = team.GetIdTeam() });
+                TeamFilter.Items.Add(new ComboBoxItem { Content = team.GetName(), Tag = team.GetIdTeam() });
             }
 
             TeamFilter.SelectedIndex = 0;
@@ -164,7 +164,7 @@ namespace Basket.Visual
         private string GetTeamNameById(string teamId)
         {
             var team = _nbaController.GetTeams().FirstOrDefault(t => t.GetIdTeam() == teamId);
-            return team?.Name ?? "Sin equipo";
+            return team?.GetName() ?? "Sin equipo";
         }
 
         private string GetCityNameById(string cityId)

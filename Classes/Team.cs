@@ -3,7 +3,7 @@
 public class Team
 {
     private string IdTeam { get; set; }
-    internal string Name { get; set; }
+    private string Name { get; set; }
     private string City { get; set; }
     
     public Team(string idTeam, string name, string city)

@@ -5,7 +5,7 @@ public class Player
     private string IdPlayer { get; set; }
     internal string Name { get; set; }
     private string SecondName { get; set; }
-    internal string LastName { get; set; }
+    private string LastName { get; set; }
     private string SecondLastName { get; set; }
     private string IdCity { get; set; }
     private DateTime BirthDay { get; set; }

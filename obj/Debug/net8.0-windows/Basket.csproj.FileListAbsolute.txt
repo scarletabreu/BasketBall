@@ -51,3 +51,5 @@ C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\GameDeta
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\GameDetails.g.cs
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CreateGame.baml
 C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CreateGame.g.cs
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CityWindow.baml
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CityWindow.g.cs
