@@ -26,45 +26,47 @@ public class NBA
     {
         Players = new List<Player>
         {
-            new Player("P001", "Michael", "Jeffrey", "Jordan", "", "CHI", new DateTime(1963, 2, 17), 23, "CHI"),
-            new Player("P002", "LeBron", "Raymone", "James", "", "CLE", new DateTime(1984, 12, 30), 6, "LAL"),
+            new Player("P001", "Michael", "Jeffrey", "Jordan", "", "CHI", new DateTime(1963, 2, 17), 23, "CB"),
+            new Player("P002", "LeBron", "Raymond", "James", "", "CLE", new DateTime(1984, 12, 30), 6, "LAL"),
             new Player("P003", "Kobe", "Bean", "Bryant", "", "PHI", new DateTime(1978, 8, 23), 24, "LAL"),
             new Player("P004", "Stephen", "", "Curry", "", "AKR", new DateTime(1988, 3, 14), 30, "GSW"),
-            new Player("P005", "Kevin", "Wayne", "Durant", "", "WDC", new DateTime(1988, 9, 29), 7, "PHX")
+            new Player("P005", "Kevin", "Wayne", "Durant", "", "WDC", new DateTime(1988, 9, 29), 7, "PS"),
+            new Player("P006", "Dwyane", "Tyrone", "Wade", "", "CHI", new DateTime(1982, 1, 17), 3, "MH"),
         };
         
         Teams = new List<Team>
         {
-            new Team("CHI", "Chicago Bulls", "Chicago"),
-            new Team("LAL", "Los Angeles Lakers", "Los Angeles"),
-            new Team("GSW", "Golden State Warriors", "San Francisco"),
-            new Team("PHX", "Phoenix Suns", "Phoenix"),
-            new Team("CLE", "Cleveland Cavaliers", "Cleveland")
+            new Team("CB", "Chicago Bulls", "CHI"),
+            new Team("LAL", "Los Angeles Lakers", "LA"),
+            new Team("GSW", "Golden State Warriors", "SF"),
+            new Team("PS", "Phoenix Suns", "PHX"),
+            new Team("CCA", "Cleveland Cavaliers", "CLE"),
+            new Team("NYN", "New York Knicks", "NYC"),
+            new Team("MH", "Miami Heat", "MIA"),
+            new Team("BC", "Boston Celtics", "BOS"),
         };
         
         Cities = new List<City>
         {
             new City("CHI", "Chicago"),
-            new City("LAL", "Los Angeles"),
-            new City("GSW", "San Francisco"),
+            new City("LA", "Los Angeles"),
+            new City("SF", "San Francisco"),
             new City("PHX", "Phoenix"),
             new City("CLE", "Cleveland"),
             new City("NYC", "New York"),
             new City("MIA", "Miami"),
             new City("BOS", "Boston"),
-            new City("NYC", "New York"),  
             new City("WDC", "Washington D.C."),
             new City("AKR", "Akron"),
             new City("PHI", "Philadelphia"),
-            new City("CLE", "Cleveland")
         };
         
         Games = new List<Game>
         {
-            new Game("G001", "Bulls vs Lakers", "CHI", "LAL", new DateTime(2024, 1, 15)),
-            new Game("G002", "Warriors vs Suns", "GSW", "PHX", new DateTime(2024, 1, 16)),
-            new Game("G003", "Cavaliers vs Heat", "CLE", "MIA", new DateTime(2024, 1, 17)),
-            new Game("G004", "Knicks vs Celtics", "NYC", "BOS", new DateTime(2024, 1, 18)),
+            new Game("G001", "Bulls vs Lakers", "CB", "LAL", new DateTime(2024, 1, 15)),
+            new Game("G002", "Warriors vs Suns", "GSW", "PS", new DateTime(2024, 1, 16)),
+            new Game("G003", "Cavaliers vs Heat", "CCA", "MH", new DateTime(2024, 1, 17)),
+            new Game("G004", "Knicks vs Celtics", "NYN", "BC", new DateTime(2024, 1, 18)),
             new Game("G005", "Lakers vs Warriors", "LAL", "GSW", new DateTime(2024, 1, 19))
         };
         
@@ -95,10 +97,15 @@ public class NBA
     // Do singleton
     public static NBA Instance => _instance ??= new();
     
-    public void AddPlayer(Player player)
+    public bool AddPlayer(Player player)
     {
-        Players.Add(player);
+        if (player == null)
+            return false;
+
+        Players.Add(player); 
+        return true;
     }
+
     
     public void AddTeam(Team team)
     {
@@ -195,5 +202,15 @@ public class NBA
     {
         var index = Teams.FindIndex(t => t.GetIdTeam() == team.GetIdTeam());
         Teams[index] = team;
+    }
+
+    public static NBA GetInstance()
+    {
+        if (_instance == null)
+        {
+            _instance = new NBA();
+        }
+
+        return _instance;
     }
 }
