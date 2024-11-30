@@ -1,94 +1,132 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Basket.Classes;
 using Basket.Controller;
 
-namespace Basket.Visual;
-
-public partial class CreateGame : Window
+namespace Basket.Visual
 {
-    public readonly NBA _nbaController;
-
-    public CreateGame()
+    public partial class CreateGame
     {
-        InitializeComponent();
-        _nbaController = NBA.GetInstance();
-        LoadData();
-    }
+        private Nba? _nbaController;
 
-    private void LoadData()
-    {
-        var teams = _nbaController.GetTeams();
+        // Event to notify when a new game is added
+        public Action<Juego>? GameAdded { get; set; }
 
-        foreach (var team in teams)
+        // Default constructor for WPF/XAML
+        public CreateGame()
         {
-            LocalTeam.Items.Add(new ComboBoxItem { Content = team.GetName(), Tag = team.GetIdTeam() });
-            VisitorTeam.Items.Add(new ComboBoxItem { Content = team.GetName(), Tag = team.GetIdTeam() });
-        }
-    }
-
-    public Action<Game> GameAdded { get; set; }
-
-    private void Save_Click(object sender, RoutedEventArgs e)
-    {
-        var description = Description.Text;
-        var localTeam = (LocalTeam.SelectedItem as ComboBoxItem)?.Tag as string;
-        var visitorTeam = (VisitorTeam.SelectedItem as ComboBoxItem)?.Tag as string;
-        var date = GameDate.SelectedDate ?? DateTime.Now;
-
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            MessageBox.Show("Por favor, introduce una descripción válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
+            InitializeComponent();
+            _nbaController = App.NbaInstance;
+            LoadData();
         }
 
-        if (string.IsNullOrWhiteSpace(localTeam))
+        // Load team data asynchronously
+        private async void LoadData()
         {
-            MessageBox.Show("Por favor, selecciona un equipo local.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
+            if (_nbaController == null)
+            {
+                MessageBox.Show("Controller not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                var teams = await _nbaController.GetAllEntitiesAsync<Equipo>();
+                foreach (var team in teams)
+                {
+                    var comboBoxItem = new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() };
+                    LocalTeam.Items.Add(comboBoxItem);
+                    VisitorTeam.Items.Add(comboBoxItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        if (string.IsNullOrWhiteSpace(visitorTeam))
+        // Save button click handler
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Por favor, selecciona un equipo visitante.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
+            if (_nbaController == null)
+            {
+                MessageBox.Show("Controller not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var description = Description.Text.Trim();
+            var localTeamId = (LocalTeam.SelectedItem as ComboBoxItem)?.Tag as string;
+            var visitorTeamId = (VisitorTeam.SelectedItem as ComboBoxItem)?.Tag as string;
+            var date = GameDate.SelectedDate ?? DateTime.Now;
+
+            // Input validation
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                MessageBox.Show("Por favor, introduce una descripción válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(localTeamId))
+            {
+                MessageBox.Show("Por favor, selecciona un equipo local.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(visitorTeamId))
+            {
+                MessageBox.Show("Por favor, selecciona un equipo visitante.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (localTeamId == visitorTeamId)
+            {
+                MessageBox.Show("El equipo local y el equipo visitante no pueden ser el mismo.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (date < DateTime.Now)
+            {
+                MessageBox.Show("Por favor, selecciona una fecha válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Create game object
+            var game = new Juego(Guid.NewGuid().ToString(), description, localTeamId, visitorTeamId, date);
+
+            try
+            {
+                await _nbaController.AddEntityAsync(game);
+                GameAdded?.Invoke(game);
+
+                MessageBox.Show($"Juego creado correctamente:\n\n" +
+                                $"Descripción: {description}\n" +
+                                $"Local: {await GetTeamNameById(localTeamId)}\n" +
+                                $"Visitante: {await GetTeamNameById(visitorTeamId)}\n" +
+                                $"Fecha: {date:dd/MM/yyyy}",
+                                "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar el juego: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        if (localTeam == visitorTeam)
+        // Cancel button click handler
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("El equipo local y el equipo visitante no pueden ser el mismo.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
+            Close();
         }
 
-        if (date < DateTime.Now)
+        // Get the team name asynchronously
+        private async Task<string> GetTeamNameById(string teamId)
         {
-            MessageBox.Show("Por favor, selecciona una fecha válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
+            if (_nbaController == null) return "Sin equipo";
+
+            var teams = await _nbaController.GetAllEntitiesAsync<Equipo>();
+            var team = teams.FirstOrDefault(t => t.GetCodEquipo() == teamId);
+            return team?.GetNombre() ?? "Sin equipo";
         }
-
-        var game = new Game(Guid.NewGuid().ToString(), description, localTeam, visitorTeam, date);
-        _nbaController.AddGame(game);
-        GameAdded?.Invoke(game);
-
-        MessageBox.Show($"Juego creado correctamente:\n\n" +
-                        $"Descripción: {description}\n" +
-                        $"Local: {GetTeamNameById(localTeam)}\n" +
-                        $"Visitante: {GetTeamNameById(visitorTeam)}\n" +
-                        $"Fecha: {date:dd/MM/yyyy}", 
-                        "Información", MessageBoxButton.OK, MessageBoxImage.Information);
-
-        Close();
-    }
-
-    private void Cancel_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
-
-    private string GetTeamNameById(string teamId)
-    {
-        var team = _nbaController.GetTeams().FirstOrDefault(t => t.GetIdTeam() == teamId);
-        return team?.GetName() ?? "Sin equipo";
     }
 }

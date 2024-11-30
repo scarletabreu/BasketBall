@@ -25,7 +25,7 @@ public partial class Cards : UserControl
     }
 
     // Propiedades para el texto del botón
-    public string ActionButtonText
+    public string? ActionButtonText
     {
         get { return ActionButton.Content.ToString(); }
         set { ActionButton.Content = value; }

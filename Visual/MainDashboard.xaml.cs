@@ -1,47 +1,49 @@
 ﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Basket.Visual;
-
-public partial class MainDashboard : Window
+namespace Basket.Visual
 {
-    public MainDashboard()
+    public partial class MainDashboard
     {
-        InitializeComponent();
-        this.Icon = new System.Windows.Media.Imaging.BitmapImage(new Uri("C:\\Users\\Scarlet\\Downloads\\Basket.png"));
-    }
-    
-    private void Cards_ActionClick(object sender, RoutedEventArgs e)
-    {
-        MessageBox.Show("Botón de acción presionado");
-    }
+        // Parameterless constructor for WPF
+        public MainDashboard()
+        {
+            InitializeComponent();
+        }
 
+        // Open the PlayerWindow
+        private void PlayerButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var playerWindow = App.ServiceProvider?.GetRequiredService<PlayerWindow>();
+            playerWindow?.Show();
 
-    private void PlayerButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        PlayerWindow playerWindow = new();
-        playerWindow.Show();
-    }
+        }
 
-    private void CloseButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        Close();
-    }
+        // Open the TeamWindow
+        private void TeamButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var teamWindow = App.ServiceProvider?.GetRequiredService<TeamWindow>();
+            teamWindow?.Show();
+        }
 
-    private void TeamButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        TeamWindow teamWindow = new();
-        teamWindow.Show();
-    }
+        // Open the GameWindow
+        private void GameButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var gameWindow = App.ServiceProvider?.GetRequiredService<GameWindow>();
+            gameWindow?.Show();
+        }
 
-    private void GameButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        GameWindow gameWindow = new();
-        gameWindow.Show();
-    }
+        // Open the CityWindow
+        private void CityButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var cityWindow = App.ServiceProvider?.GetRequiredService<CityWindow>();
+            cityWindow?.Show();
+        }
 
-    private void CityButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        CityWindow cityWindow = new();
-        cityWindow.Show();
+        // Close the MainDashboard window
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

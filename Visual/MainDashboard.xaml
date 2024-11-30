@@ -12,14 +12,13 @@
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="#AA423A"/> <!-- Color inicial del borde -->
-            <Setter Property="Width" Value="200"/> <!-- Ajustado para un botón más ancho -->
+            <Setter Property="BorderBrush" Value="#AA423A"/>
+            <Setter Property="Width" Value="200"/>
             <Setter Property="Height" Value="40"/>
-            
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/> <!-- Alineación del texto a la izquierda -->
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="10,5"/> <!-- Añadido margen para separar los botones -->
+            <Setter Property="Margin" Value="10,5"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -30,22 +29,20 @@
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              Margin="20,0,0,0"/> <!-- Añadido margen izquierdo para el texto -->
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                              Margin="20,0,0,0"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            
-            <!-- Triggers para cambiar color en diferentes estados -->
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#DB783E"/> <!-- Color de fondo al pasar el mouse -->
-                    <Setter Property="BorderBrush" Value="#AA423A"/> <!-- Color del borde al pasar el mouse -->
+                    <Setter Property="Background" Value="#DB783E"/>
+                    <Setter Property="BorderBrush" Value="#AA423A"/>
                 </Trigger>
                 <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="#C0C9FE"/> <!-- Color de fondo para botones deshabilitados -->
-                    <Setter Property="BorderBrush" Value="#A0A0A0"/> <!-- Color del borde para botones deshabilitados -->
+                    <Setter Property="Background" Value="#C0C9FE"/>
+                    <Setter Property="BorderBrush" Value="#A0A0A0"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -59,29 +56,26 @@
 
         <!-- Left Sidebar -->
         <Border Grid.Column="0" CornerRadius="15" Margin="10">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                        <GradientStop Color="#F2E3D8" Offset="0"/>
-                        <GradientStop Color="#DB783E" Offset="0.8"/>
-                        <GradientStop Color="#AA423A" Offset="1"/> <!-- Color ligeramente más oscuro para hover -->
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#F2E3D8" Offset="0"/>
+                    <GradientStop Color="#DB783E" Offset="0.8"/>
+                    <GradientStop Color="#AA423A" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
             
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Margin="0,20,0,40" HorizontalAlignment="Center">
-    
-                        <!-- SVG como imagen -->
-                        <Image Source="C:\\Users\\Scarlet\\Downloads\\Basket.png" Width="80" Height="80"/>
-
-                        <TextBlock Text="Bienvenido A" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,0"/>
-                        <TextBlock Text="HoopStats" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
-                    </StackPanel>
+                <StackPanel Grid.Row="0" Margin="0,20,0,40" HorizontalAlignment="Center">
+                    <Image Source="pack://application:,,,/Resources/500311.PNG" Width="80" Height="80"/>
+                    <TextBlock Text="Bienvenido A" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                    <TextBlock Text="HoopStats" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
+                </StackPanel>
 
                 <!-- Navigation Menu -->
                 <StackPanel Grid.Row="1">
@@ -93,7 +87,7 @@
 
                 <!-- Logout Button -->
                 <Button Grid.Row="2" x:Name="CloseButton" Content="Cerrar Sesión" Style="{StaticResource MenuButtonStyle}" Click="CloseButton_OnClick"/>
-                </Grid>
+            </Grid>
         </Border>
 
         <!-- Main Content Area -->
@@ -131,10 +125,9 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Chart placeholder - In real implementation, use a proper charting control -->
+                    <!-- Chart placeholder -->
                     <lvc:CartesianChart Grid.Row="2" Height="200" Margin="0,20,0,0">
                         <lvc:CartesianChart.Series>
-                            <!-- Valores de Prueba -->
                             <lvc:LineSeries Values="10,13,20,15,18,25,28,20" Stroke="#DB783E" Fill="#DB783E" />
                             <lvc:LineSeries Values="15,10,15,20,25,20,15,23" Stroke="#F2E3D8" Fill="#F2E3D8" />
                         </lvc:CartesianChart.Series>
@@ -155,16 +148,13 @@
                 <!-- Games List -->
                 <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="20">
                     <StackPanel>
-                        <!-- Título de la sección -->
                         <TextBlock Text="Lista de Juegos" FontSize="16" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,10"/>
-                        <!-- Contenido de la lista -->
                         <ListView BorderThickness="0">
                             <ListViewItem>Game 1</ListViewItem>
                             <ListViewItem>Game 2</ListViewItem>
                         </ListView>
                     </StackPanel>
                 </Border>
-
 
                 <!-- Statistics Cards -->
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">

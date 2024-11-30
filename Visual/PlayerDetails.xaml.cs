@@ -11,7 +11,7 @@ namespace Basket.Visual
             InitializeComponent();
         }
         
-        public string Name
+        public new string Name
         {
             get { return FullNameTextBlockHeader.Text; }
             set { FullNameTextBlockHeader.Text = value; }
