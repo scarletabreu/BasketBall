@@ -13,7 +13,6 @@ namespace Basket.Visual
         {
             InitializeComponent();
             _nbaController = App.NbaInstance;
-
             LoadGameCards();
             LoadFilters();
         }

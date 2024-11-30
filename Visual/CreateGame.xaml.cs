@@ -7,7 +7,7 @@ namespace Basket.Visual
 {
     public partial class CreateGame
     {
-        private Nba? _nbaController;
+        private  readonly Nba? _nbaController;
 
         // Event to notify when a new game is added
         public Action<Juego>? GameAdded { get; set; }

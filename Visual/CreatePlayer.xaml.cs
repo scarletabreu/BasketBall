@@ -7,7 +7,7 @@ namespace Basket.Visual
 {
     public partial class CreatePlayer
     {
-        private Nba? _nbaController;
+        private readonly Nba? _nbaController;
 
         // Event to notify when a new player is added
         public Action<Jugador>? PlayerAdded { get; set; }
@@ -16,12 +16,7 @@ namespace Basket.Visual
         public CreatePlayer()
         {
             InitializeComponent();
-        }
-
-        // Method to set dependencies after construction
-        public void SetDependencies(Nba? nbaController)
-        {
-            _nbaController = nbaController ?? throw new ArgumentNullException(nameof(nbaController));
+            _nbaController = App.NbaInstance;
             LoadData();
         }
 
