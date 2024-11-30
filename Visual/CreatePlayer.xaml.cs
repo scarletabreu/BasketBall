@@ -3,92 +3,127 @@ using System.Windows.Controls;
 using Basket.Classes;
 using Basket.Controller;
 
-namespace Basket.Visual;
-
-public partial class CreatePlayer : Window
+namespace Basket.Visual
 {
-    public readonly NBA _nbaController;
-    public CreatePlayer()
+    public partial class CreatePlayer
     {
-        InitializeComponent();
-        _nbaController = NBA.GetInstance();
+        private Nba? _nbaController;
 
-        if (_nbaController == null)
+        // Event to notify when a new player is added
+        public Action<Jugador>? PlayerAdded { get; set; }
+
+        // Default constructor for WPF/XAML
+        public CreatePlayer()
         {
-            MessageBox.Show("Error al inicializar el controlador NBA. Verifica la configuración.", "Error", 
-                MessageBoxButton.OK, MessageBoxImage.Error);
-            this.Close();
-            return;
+            InitializeComponent();
         }
-        LoadData();
+
+        // Method to set dependencies after construction
+        public void SetDependencies(Nba? nbaController)
+        {
+            _nbaController = nbaController ?? throw new ArgumentNullException(nameof(nbaController));
+            LoadData();
+        }
+
+        // Load team and city data asynchronously
+        private async void LoadData()
+        {
+            if (_nbaController == null)
+            {
+                MessageBox.Show("Controller not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                var teams = await _nbaController.GetAllEntitiesAsync<Equipo>();
+                var cities = await _nbaController.GetAllEntitiesAsync<Ciudad>();
+
+                foreach (var team in teams)
+                {
+                    TeamComboBox.Items.Add(new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() });
+                }
+
+                foreach (var city in cities)
+                {
+                    CityComboBox.Items.Add(new ComboBoxItem { Content = city.GetNombre(), Tag = city.GetCodCiudad() });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Save button click handler
+        private async void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (_nbaController == null)
+            {
+                MessageBox.Show("Controller not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Capture form data
+            var playerName = PlayerName.Text.Trim();
+            var secondName = SecondNameLabel.Text.Trim();
+            var lastName = LastName.Text.Trim();
+            var secondLastName = SecondLastNameLabel.Text.Trim();
+
+            if (!int.TryParse(NumberLabel.Text, out var number))
+            {
+                MessageBox.Show("Por favor, introduce un número válido en el campo de Número.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var cityId = (CityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
+            var teamId = (TeamComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
+            var birthDate = DatePickerQuery.SelectedDate;
+
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(playerName) ||
+                string.IsNullOrWhiteSpace(lastName) ||
+                string.IsNullOrWhiteSpace(cityId) ||
+                string.IsNullOrWhiteSpace(teamId) ||
+                birthDate == null)
+            {
+                MessageBox.Show("Por favor, completa todos los campos obligatorios.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                // Create player object
+                var jugador = new Jugador(
+                    Guid.NewGuid().ToString(), // Generate unique ID
+                    playerName,
+                    secondName,
+                    lastName,
+                    secondLastName,
+                    cityId,
+                    birthDate.Value,
+                    number,
+                    teamId
+                );
+
+                // Save player
+                await _nbaController.AddEntityAsync(jugador);
+
+                MessageBox.Show("Jugador guardado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                PlayerAdded?.Invoke(jugador);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al guardar el jugador: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Cancel button click handler
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
-    
-    public Action<Player> PlayerAdded { get; set; }
-
-    private void LoadData()
-    {
-        var teams = _nbaController.GetTeams();
-        var cities = _nbaController.GetCities();
-
-        foreach (var team in teams)
-        {
-            TeamComboBox.Items.Add(new ComboBoxItem { Content = team.GetName(), Tag = team.GetIdTeam() });
-        }
-
-        foreach (var city in cities)
-        {
-            CityComboBox.Items.Add(new ComboBoxItem { Content = city.GetName(), Tag = city.GetIdCity() });
-        }
-
-    }
-
-    private void Save_Click(object sender, RoutedEventArgs e)
-    {
-        // Capturar los datos del formulario
-        var playerName = PlayerName.Text;
-        var secondName = SecondNameLabel.Text;
-        var lastName = LastName.Text;
-        var secondLastName = SecondLastNameLabel.Text;
-
-        if (!int.TryParse(NumberLabel.Text, out var number))
-        {
-            MessageBox.Show("Por favor, introduce un número válido en el campo de Número.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
-
-        var city = (CityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
-        var team = (TeamComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
-        var birthDate = DatePickerQuery.SelectedDate;
-
-        if (string.IsNullOrWhiteSpace(playerName) || 
-            string.IsNullOrWhiteSpace(lastName) || 
-            city == null || 
-            team == null || 
-            birthDate == null)
-        {
-            MessageBox.Show("Por favor, completa todos los campos obligatorios.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
-
-        Player player = new Player("P007", playerName, secondName, lastName, secondLastName, city, birthDate.Value, number, team);
-        
-        bool isSaved = _nbaController.AddPlayer(player);
-
-        if (isSaved)
-        {
-            MessageBox.Show("Jugador guardado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
-            PlayerAdded?.Invoke(player);
-            this.Close();
-        }
-        else
-        {
-            MessageBox.Show("Ocurrió un error al guardar el jugador.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }   
-    }
-
-    private void Cancel_Click(object sender, RoutedEventArgs e)
-    {
-        this.Close();
-    }
-
 }

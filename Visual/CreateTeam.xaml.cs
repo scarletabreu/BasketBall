@@ -1,64 +1,61 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Basket.Classes;
 using Basket.Controller;
 
-namespace Basket.Visual;
-
-public partial class CreateTeam : Window
+namespace Basket.Visual
 {
-    public readonly NBA _nbaController;
-    public CreateTeam()
+    public partial class CreateTeam
     {
-        InitializeComponent();
-        _nbaController = NBA.GetInstance();
+        private readonly Nba? _nbaController;
 
-        if (_nbaController == null)
+        public Action<Equipo>? TeamAdded { get; set; }
+
+        // Constructor with dependency injection for NBA controller
+        public CreateTeam()
         {
-            MessageBox.Show("Error al inicializar el controlador NBA. Verifica la configuración.", "Error", 
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            InitializeComponent();
+            _nbaController = App.NbaInstance;
+            LoadData();
+        }
+
+        private async void LoadData()
+        {
+            // Load cities into combo box
+            var cities = await _nbaController?.GetAllEntitiesAsync<Ciudad>()!;
+
+            foreach (var city in cities)
+            {
+                CityComboBox.Items.Add(new ComboBoxItem { Content = city.GetNombre(), Tag = city.GetCodCiudad() });
+            }
+        }
+
+        private async void Save_Click(object sender, RoutedEventArgs e)
+        {
+            // Get team name and selected city
+            var teamName = TeamName.Text.Trim();
+            var city = (CityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
+
+            // Validate input fields
+            if (string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(city))
+            {
+                MessageBox.Show("Por favor, completa todos los campos obligatorios.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Create new team object and add to controller
+            var team = new Equipo(Guid.NewGuid().ToString(), teamName, city);
+            await _nbaController?.AddEntityAsync(team)!;
+
+            // Trigger the TeamAdded event and close the window
+            TeamAdded?.Invoke(team);
             this.Close();
-            return;
         }
-        LoadData();
-    }
-    
-    public Action<Team> TeamAdded { get; set; }
 
-    private void LoadData()
-    {
-        var cities = _nbaController.GetCities();
-        
-        foreach (var city in cities)
+        private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            CityComboBox.Items.Add(new ComboBoxItem { Content = city.GetName(), Tag = city.GetIdCity() });
+            // Close the window without saving
+            this.Close();
         }
-
     }
-    
-    private void Save_Click(object sender, RoutedEventArgs e)
-    {
-        var teamName = TeamName.Text;
-        var city = (CityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
-        
-        if (string.IsNullOrWhiteSpace(teamName) || city == null)
-        {
-            MessageBox.Show("Por favor, completa todos los campos obligatorios.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            return;
-        }
-        
-        var team = new Team(Guid.NewGuid().ToString(), teamName, city);
-        _nbaController.AddTeam(team);
-        TeamAdded?.Invoke(team);
-        this.Close();
-        
-    }
-
-    private void Cancel_Click(object sender, RoutedEventArgs e)
-    {
-        this.Close();
-    }
-    
-
 }

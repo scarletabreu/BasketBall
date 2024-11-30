@@ -220,7 +220,7 @@
             </Grid.RowDefinitions>
 
             <!-- Header -->
-            <TextBlock Text="Ciudades0" 
+            <TextBlock Text="Ciudades" 
                        FontSize="24" 
                        FontWeight="SemiBold" 
                        Margin="10,20,10,20"/>

@@ -3,181 +3,175 @@ using System.Windows.Controls;
 using Basket.Classes;
 using Basket.Controller;
 
-namespace Basket.Visual;
-
-public partial class GameWindow : Window
+namespace Basket.Visual
 {
-    private readonly NBA _nbaController;
-    public GameWindow()
+    public partial class GameWindow
     {
-        InitializeComponent();
-        this.Icon = new System.Windows.Media.Imaging.BitmapImage(
-            new Uri("C:\\Users\\Scarlet\\Downloads\\Basket.png"));
-        _nbaController = NBA.GetInstance();
-        LoadGameCards();
-        LoadFilters();
-    }
-    
-    private void LoadGameCards()
-    {
-        var wrapPanel = CardsContainer;
-        wrapPanel.Children.Clear();
-
-        var games = _nbaController.GetGames();
-
-        foreach (var game in games)
+        private readonly Nba? _nbaController;
+        
+        public GameWindow()
         {
+            InitializeComponent();
+            _nbaController = App.NbaInstance;
+
+            LoadGameCards();
+            LoadFilters();
+        }
+        private async void LoadGameCards()
+        {
+            var wrapPanel = CardsContainer;
+            wrapPanel.Children.Clear();
+
+            var games = await _nbaController?.GetAllEntitiesAsync<Juego>()!;
+
+            foreach (var game in games)
+            {
+                var card = new Cards
+                {
+                    Width = 280,
+                    Margin = new Thickness(5),
+                    Heading = $"{game.GetDescripcion()}",
+                    Description = $"{GetEquipoNombreByCod(game.GetEquipo1())} VS {GetEquipoNombreByCod(game.GetEquipo2())}",
+                    ActionButtonText = "Ver detalles"
+                };
+
+                card.ActionClick += (s, e) => ShowGameDetails(game);
+                wrapPanel.Children.Add(card);
+            }
+        }
+
+        private void ShowGameDetails(Juego game)
+        {
+            var gameDetails = new GameDetails
+            {
+                Header = $"{game.GetDescripcion()}",
+                Initials = $"{GetEquipoNombreByCod(game.GetEquipo1())[0]} vs {GetEquipoNombreByCod(game.GetEquipo2())[0]}",
+                LocalTeam = $"{GetEquipoNombreByCod(game.GetEquipo1())}",
+                LocalTeamInfo = $"{GetEquipoNombreByCod(game.GetEquipo1())}",
+                VisitorTeam = $"{GetEquipoNombreByCod(game.GetEquipo2())}",
+                VisitorTeamInfo = $"{GetEquipoNombreByCod(game.GetEquipo2())}",
+                Description = $"{game.GetDescripcion()}",
+                Game = $"{game.GetDescripcion()}",
+                Date = $"{game.GetFecha():dd/MM/yyyy}"
+            };
+
+            var playerDetailsWindow = new Window
+            {
+                Title = "Detalles del Juego",
+                Content = gameDetails,
+                SizeToContent = SizeToContent.WidthAndHeight
+            };
+
+            playerDetailsWindow.ShowDialog();
+        }
+
+        private string GetEquipoNombreByCod(string teamCod)
+        {
+            var team = _nbaController?.GetAllEntitiesAsync<Equipo>().Result.FirstOrDefault(t => t.GetCodEquipo() == teamCod);
+            return team?.GetNombre() ?? "Sin equipo";
+        }
+
+        public async void LoadFilters()
+        {
+            var teams = await _nbaController?.GetAllEntitiesAsync<Equipo>()!;
+
+            LocalTeamFilter.Items.Add(new ComboBoxItem { Content = " ", Tag = " " });
+            foreach (var team in teams)
+            {
+                LocalTeamFilter.Items.Add(new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() });
+            }
+            LocalTeamFilter.SelectedIndex = 0;
+
+            VisitorTeamFilter.Items.Add(new ComboBoxItem { Content = " ", Tag = " " });
+            foreach (var team in teams)
+            {
+                VisitorTeamFilter.Items.Add(new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() });
+            }
+            VisitorTeamFilter.SelectedIndex = 0;
+
+            var dates = (await _nbaController?.GetAllEntitiesAsync<Juego>()!).Select(game => game.GetFecha().ToString("dd/MM/yyyy")).Distinct().ToList();
+
+            DateFilter.Items.Add(new ComboBoxItem { Content = " ", Tag = " " });
+            foreach (var date in dates)
+            {
+                DateFilter.Items.Add(new ComboBoxItem { Content = date, Tag = date });
+            }
+            DateFilter.SelectedIndex = 0;
+        }
+
+        private async void ApplyFilterButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var localEquipo = (LocalTeamFilter.SelectedItem as ComboBoxItem)?.Content?.ToString()?.ToLower();
+            var visitorEquipo = (VisitorTeamFilter.SelectedItem as ComboBoxItem)?.Content?.ToString()?.ToLower();
+            var date = (DateFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
+
+            var allJuegos = await _nbaController?.GetAllEntitiesAsync<Juego>()!;
+
+            var filteredJuegos = allJuegos.Where(game =>
+                (string.IsNullOrEmpty(localEquipo) || GetEquipoNombreByCod(game.GetEquipo1()).ToLower().Contains(localEquipo)) &&
+                (string.IsNullOrEmpty(visitorEquipo) || GetEquipoNombreByCod(game.GetEquipo2()).ToLower().Contains(visitorEquipo)) ||
+                (string.IsNullOrEmpty(date) || game.GetFecha().ToString("dd/MM/yyyy").Equals(date))
+            ).ToList();
+
+            UpdateGameCards(filteredJuegos);
+        }
+
+        private void UpdateGameCards(List<Juego> games)
+        {
+            var wrapPanel = CardsContainer;
+            wrapPanel.Children.Clear();
+
+            foreach (var game in games)
+            {
+                var card = new Cards
+                {
+                    Width = 280,
+                    Margin = new Thickness(5),
+                    Heading = $"{game.GetDescripcion()}",
+                    Description = $"{GetEquipoNombreByCod(game.GetEquipo1())} VS {GetEquipoNombreByCod(game.GetEquipo2())}",
+                    ActionButtonText = "Ver detalles"
+                };
+
+                card.ActionClick += (s, e) => ShowGameDetails(game);
+                wrapPanel.Children.Add(card);
+            }
+        }
+
+        private void ClearFiltersButton_Click(object sender, RoutedEventArgs e)
+        {
+            LocalTeamFilter.SelectedIndex = 0;
+            VisitorTeamFilter.SelectedIndex = 0;
+            DateFilter.SelectedIndex = 0;
+            LoadGameCards();
+        }
+
+        private void OnGameCreated(Juego newGame)
+        {
+            var wrapPanel = CardsContainer;
+
             var card = new Cards
             {
                 Width = 280,
                 Margin = new Thickness(5),
-                Heading = $"{game.GetDescription()}",
-                Description = $"{GetTeamNameById(game.GetLocalTeam())} VS {GetTeamNameById(game.GetVisitorTeam())}",
+                Heading = $"{newGame.GetDescripcion()}",
+                Description = $"{GetEquipoNombreByCod(newGame.GetEquipo1())} VS {GetEquipoNombreByCod(newGame.GetEquipo2())}",
                 ActionButtonText = "Ver detalles"
             };
 
-            card.ActionClick += (s, e) => ShowGameDetails(game);
+            card.ActionClick += (s, e) => ShowGameDetails(newGame);
             wrapPanel.Children.Add(card);
         }
-    }
-    
-    private void ShowGameDetails(Game game)
-    {
 
-        var gameDetails = new GameDetails()
+        private void CreateGameButton_OnClick(object sender, RoutedEventArgs e)
         {
-            Header = $"{game.GetDescription()}",
-            Initials = $"{GetTeamNameById(game.GetLocalTeam())[0]} vs {GetTeamNameById(game.GetVisitorTeam())[0]}",
-            LocalTeam = $"{GetTeamNameById(game.GetLocalTeam())}",
-            LocalTeamInfo = $"{GetTeamNameById(game.GetLocalTeam())}",
-            VisitorTeam = $"{GetTeamNameById(game.GetVisitorTeam())}",
-            VisitorTeamInfo = $"{GetTeamNameById(game.GetVisitorTeam())}",
-            Description = $"{game.GetDescription()}",
-            Game = $"{game.GetDescription()}",
-            Date = $"{game.GetDate():dd/MM/yyyy}"
-
-        };
-
-        var playerDetailsWindow = new Window
-        {
-            Title = "Detalles del Juego",
-            Content = gameDetails,
-            SizeToContent = SizeToContent.WidthAndHeight
-        };
-
-        playerDetailsWindow.ShowDialog();
-    }
-    
-    private string GetTeamNameById(string teamId)
-    {
-        var team = _nbaController.GetTeams().FirstOrDefault(t => t.GetIdTeam() == teamId);
-        return team?.GetName() ?? "Sin equipo";
-    }
-
-
-    public void LoadFilters()
-    {
-        var teams = _nbaController.GetTeams();
-        
-        LocalTeamFilter.Items.Add(new ComboBoxItem {Content = " ", Tag = " "});
-        foreach (var team in teams)
-        {
-            LocalTeamFilter.Items.Add(new ComboBoxItem {Content = team.GetName(), Tag = team.GetIdTeam()});
+            var createGame = new CreateGame();
+            createGame.GameAdded += OnGameCreated;
+            createGame.ShowDialog();
         }
-        LocalTeamFilter.SelectedIndex = 0;
-        
-        VisitorTeamFilter.Items.Add(new ComboBoxItem {Content = " ", Tag = " "});
-        foreach (var team in teams)
+
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
-            VisitorTeamFilter.Items.Add(new ComboBoxItem {Content = team.GetName(), Tag = team.GetIdTeam()});
+            Close();
         }
-        VisitorTeamFilter.SelectedIndex = 0;
-        
-        var dates = _nbaController.GetGames().Select(game => game.GetDate().ToString("dd/MM/yyyy")).Distinct().ToList();
-        
-        DateFilter.Items.Add(new ComboBoxItem {Content = " ", Tag = " "});
-        foreach (var date in dates)
-        {
-            DateFilter.Items.Add(new ComboBoxItem {Content = date, Tag = date});
-        }
-        DateFilter.SelectedIndex = 0;
-        
-    }
-    private void ApplyFilterButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        var localTeam = (LocalTeamFilter.SelectedItem as ComboBoxItem)?.Content?.ToString().ToLower();
-        var visitorTeam = (VisitorTeamFilter.SelectedItem as ComboBoxItem)?.Content?.ToString().ToLower();
-        var date = (DateFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
-
-        var allGames = _nbaController.GetGames();
-
-        var filteredGames = allGames.Where(game =>
-            (string.IsNullOrEmpty(localTeam) || GetTeamNameById(game.GetLocalTeam()).ToLower().Contains(localTeam)) &&
-            (string.IsNullOrEmpty(visitorTeam) || GetTeamNameById(game.GetVisitorTeam()).ToLower().Contains(visitorTeam)) ||
-            (string.IsNullOrEmpty(date) || game.GetDate().ToString("dd/MM/yyyy").Equals(date))
-        ).ToList();
-
-        UpdateGameCards(filteredGames);
-    }
-
-    private void UpdateGameCards(List<Game> games)
-    {
-        var wrapPanel = CardsContainer;
-        wrapPanel.Children.Clear();
-        
-        foreach (var game in games)
-        {
-
-            var card = new Cards
-            {
-                Width = 280,
-                Margin = new Thickness(5),
-                Heading = $"{game.GetDescription()}",
-                Description = $"{GetTeamNameById(game.GetLocalTeam())} VS {GetTeamNameById(game.GetVisitorTeam())}",
-                ActionButtonText = "Ver detalles"
-            };
-
-            card.ActionClick += (s, e) => ShowGameDetails(game);
-            wrapPanel.Children.Add(card);
-        }
-    }
-
-    private void ClearFiltersButton_Click(object sender, RoutedEventArgs e)
-    {
-        LocalTeamFilter.SelectedIndex = 0;
-        VisitorTeamFilter.SelectedIndex = 0;
-        DateFilter.SelectedIndex = 0;
-        LoadGameCards();
-    }
-    
-    private void OnGameCreated(Game newGame)
-    {
-        var wrapPanel = CardsContainer;
-
-        var games = _nbaController.GetGames();
-        
-        var card = new Cards
-        {
-            Width = 280,
-            Margin = new Thickness(5),
-            Heading = $"{newGame.GetDescription()}",
-            Description = $"{GetTeamNameById(newGame.GetLocalTeam())} VS {GetTeamNameById(newGame.GetVisitorTeam())}",
-            ActionButtonText = "Ver detalles"
-        };
-
-        card.ActionClick += (s, e) => ShowGameDetails(newGame);
-        wrapPanel.Children.Add(card);
-    }
-
-    private void CreateGameButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        var createGame = new CreateGame();
-        createGame.GameAdded += OnGameCreated;
-        createGame.ShowDialog();
-    }
-    
-    private void CloseButton_OnClick(object sender, RoutedEventArgs e)
-    {
-        Close();
     }
 }

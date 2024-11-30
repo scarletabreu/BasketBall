@@ -16,7 +16,7 @@ public partial class TeamDetails : UserControl
         set => TeamInitials.Text = value;
     }
     
-    public string Name
+    public new string Name
     {
         get => FullNameTextBlockHeader.Text;
         set => FullNameTextBlockHeader.Text = value;
