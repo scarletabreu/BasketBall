@@ -7,20 +7,14 @@ namespace Basket.Visual
 {
     public partial class TeamWindow
     {
-        private Nba? _nbaController;
-
-        // Constructor with Dependency Injection for NBA controller and DbConnection
-        public TeamWindow(Nba? nbaController) : this()
-        {
-            InitializeComponent();
-            _nbaController = nbaController ?? throw new ArgumentNullException(nameof(nbaController));
-            LoadData();
-            LoadFilters();
-        }
+        private readonly Nba? _nbaController;
 
         public TeamWindow()
         {
             InitializeComponent();
+            _nbaController = App.NbaInstance;
+            LoadData();
+            LoadFilters();
         }
 
         private async void LoadData()
