@@ -58,6 +58,8 @@ namespace Basket.Visual
                 MessageBox.Show("Controller not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            
+            int cantPlayers = (await _nbaController.GetAllEntitiesAsync<Jugador>()).Count + 1;
 
             // Capture form data
             var playerName = PlayerName.Text.Trim();
@@ -75,6 +77,7 @@ namespace Basket.Visual
             var teamId = (TeamComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
             var birthDate = DatePickerQuery.SelectedDate;
 
+
             // Validate inputs
             if (string.IsNullOrWhiteSpace(playerName) ||
                 string.IsNullOrWhiteSpace(lastName) ||
@@ -89,8 +92,9 @@ namespace Basket.Visual
             try
             {
                 // Create player object
+                   
                 var jugador = new Jugador(
-                    Guid.NewGuid().ToString(), // Generate unique ID
+                    "J-" + cantPlayers.ToString("D3"),
                     playerName,
                     secondName,
                     lastName,
@@ -111,7 +115,15 @@ namespace Basket.Visual
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar el jugador: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var errorMessage = $"Error al guardar el jugador: {ex.Message}";
+
+                // Check if there is an InnerException and add it to the error message
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\nInner Exception: {ex.InnerException.Message}";
+                }
+
+                MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -8,17 +8,15 @@ namespace Basket.Visual
     public partial class PlayerWindow
     {
         private readonly Nba? _nbaController;
-        
+
         public PlayerWindow()
         {
-            InitializeComponent();
             InitializeComponent();
             _nbaController = App.NbaInstance;
             LoadPlayerCards();
             LoadFilters();
         }
 
-        // Load the player cards based on the current data from the NBA controller
         private async void LoadPlayerCards()
         {
             var wrapPanel = CardsContainer;
@@ -26,7 +24,7 @@ namespace Basket.Visual
 
             var players = await _nbaController?.GetAllEntitiesAsync<Jugador>()!;
             var teams = await _nbaController?.GetAllEntitiesAsync<Equipo>()!;
-            
+
             foreach (var player in players)
             {
                 var teamName = teams.FirstOrDefault(team => team.GetCodEquipo() == player.GetCodEquipo())?.GetNombre() ?? "Sin equipo";
@@ -45,7 +43,6 @@ namespace Basket.Visual
             }
         }
 
-        // Show the details of a player in a new window
         private async void ShowPlayerDetails(Jugador jugador)
         {
             var city = (await _nbaController?.GetAllEntitiesAsync<Ciudad>()!).FirstOrDefault(c => c.GetCodCiudad() == jugador.GetCiudadNacim());
@@ -78,82 +75,81 @@ namespace Basket.Visual
             Close();
         }
 
-        // Load filters into the combo boxes for filtering players
-        private async void LoadFilters()
+    private async void LoadFilters()
+    {
+        var teams = await _nbaController?.GetAllEntitiesAsync<Equipo>()!;
+        var players = await _nbaController?.GetAllEntitiesAsync<Jugador>()!;
+        var cities = await _nbaController?.GetAllEntitiesAsync<Ciudad>()!;
+
+        // Team filter
+        TeamFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });  // Empty Tag for "Todos"
+        foreach (var team in teams)
         {
-            var teams = await _nbaController?.GetAllEntitiesAsync<Equipo>()!;
-            var players = await _nbaController?.GetAllEntitiesAsync<Jugador>()!;
-            var cities = await _nbaController?.GetAllEntitiesAsync<Ciudad>()!;
-
-            // Populate Team Filter
-            TeamFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
-            foreach (var team in teams)
-            {
-                TeamFilter.Items.Add(new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() });
-            }
-            TeamFilter.SelectedIndex = 0;
-
-            // Populate Number Filter
-            var numbers = players.Select(player => player.GetNumero().ToString()).Distinct().ToList();
-            NumberFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
-            foreach (var number in numbers)
-            {
-                NumberFilter.Items.Add(new ComboBoxItem { Content = number, Tag = number });
-            }
-            NumberFilter.SelectedIndex = 0;
-
-            // Populate Name Filter
-            var names = players.Select(player => player.GetNombre1()).Distinct().ToList();
-            NameFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
-            foreach (var name in names)
-            {
-                NameFilter.Items.Add(new ComboBoxItem { Content = name, Tag = name });
-            }
-            NameFilter.SelectedIndex = 0;
-
-            // Populate City Filter
-            var cityNames = cities.Select(city => city.GetNombre()).Distinct().ToList();
-            CityFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });
-            foreach (var city in cityNames)
-            {
-                CityFilter.Items.Add(new ComboBoxItem { Content = city, Tag = city });
-            }
-            CityFilter.SelectedIndex = 0;
+            TeamFilter.Items.Add(new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() });
         }
+        TeamFilter.SelectedIndex = 0;
 
-        // Apply filters based on user selections
-        private async void ApplyFilterButton_OnClick(object sender, RoutedEventArgs e)
+        // Number filter
+        var numbers = players.Select(player => player.GetNumero().ToString()).Distinct().ToList();
+        NumberFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });  // Empty Tag for "Todos"
+        foreach (var number in numbers)
         {
-            var nameFilter = NameFilter.Text.ToLower();
-            var selectedTeamName = (TeamFilter.SelectedItem as ComboBoxItem)?.Content.ToString()?.ToLower();
-            var numberFilter = NumberFilter.Text;
-            var selectedCityName = (CityFilter.SelectedItem as ComboBoxItem)?.Content.ToString()?.ToLower();
-
-            var filteredPlayers = (await _nbaController?.GetAllEntitiesAsync<Jugador>()!)
-                .Where(player =>
-                    (string.IsNullOrEmpty(nameFilter) || player.GetNombre1().ToLower().Contains(nameFilter)) &&
-                    (string.IsNullOrEmpty(selectedTeamName) || GetEquipoNameByCod(player.GetCodEquipo()).ToLower().Contains(selectedTeamName)) &&
-                    (string.IsNullOrEmpty(numberFilter) || player.GetNumero().ToString() == numberFilter) &&
-                    (string.IsNullOrEmpty(selectedCityName) || GetCiudadNameByCod(player.GetCiudadNacim()).ToLower().Contains(selectedCityName))
-                )
-                .ToList();
-
-            UpdatePlayerCards(filteredPlayers);
+            NumberFilter.Items.Add(new ComboBoxItem { Content = number, Tag = number });
         }
+        NumberFilter.SelectedIndex = 0;
 
-        // Helper methods to get team and city names by their IDs
-        private string GetEquipoNameByCod(string teamCod)
+        // Name filter
+        var names = players.Select(player => player.GetNombre1()).Distinct().ToList();
+        NameFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });  // Empty Tag for "Todos"
+        foreach (var name in names)
         {
-            return _nbaController?.GetAllEntitiesAsync<Equipo>().Result.FirstOrDefault(t => t.GetCodEquipo() == teamCod)?.GetNombre() ?? "Sin equipo";
+            NameFilter.Items.Add(new ComboBoxItem { Content = name, Tag = name });
         }
+        NameFilter.SelectedIndex = 0;
 
-        private string GetCiudadNameByCod(string cityCod)
+        // City filter
+        CityFilter.Items.Add(new ComboBoxItem { Content = "Todos", Tag = "" });  // Empty Tag for "Todos"
+        foreach (var city in cities)
         {
-            return _nbaController?.GetAllEntitiesAsync<Ciudad>().Result.FirstOrDefault(c => c.GetCodCiudad() == cityCod)?.GetNombre() ?? "Sin ciudad";
+            CityFilter.Items.Add(new ComboBoxItem { Content = city.GetNombre(), Tag = city.GetCodCiudad() });
         }
+        CityFilter.SelectedIndex = 0;
+    }
 
-        // Update the player cards after filtering
-        private async void UpdatePlayerCards(List<Jugador> players)
+    private async void ApplyFilterButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        // Retrieve selected filter values
+        var nameFilter = (NameFilter.SelectedItem as ComboBoxItem)?.Tag?.ToString()?.ToLower().Trim();
+        var selectedTeamTag = (TeamFilter.SelectedItem as ComboBoxItem)?.Tag?.ToString()?.ToLower().Trim();
+        var numberFilter = NumberFilter.Text.Trim();
+        var selectedCityTag = (CityFilter.SelectedItem as ComboBoxItem)?.Tag?.ToString()?.ToLower().Trim();
+
+        // Fetch necessary data asynchronously
+        var allPlayers = await _nbaController?.GetAllEntitiesAsync<Jugador>()!;
+
+        // Filter players based on selected filters
+        var filteredPlayers = allPlayers.Where(player =>
+            // Name filter: allow partial matching, but if "Todos" (empty Tag), match everything
+            (string.IsNullOrEmpty(nameFilter) || player.GetNombre1().ToLower().Contains(nameFilter)) &&
+
+            // Team filter: match the team code (Tag) correctly
+            (string.IsNullOrEmpty(selectedTeamTag) || player.GetCodEquipo().ToLower() == selectedTeamTag) &&
+
+            // Number filter: match exactly or allow "Todos"
+            (numberFilter == "Todos" || player.GetNumero().ToString() == numberFilter) &&
+
+            // City filter: allow partial matching, but if "Todos" (empty Tag), match everything
+            (string.IsNullOrEmpty(selectedCityTag) || player.GetCiudadNacim().ToLower() == selectedCityTag)
+        ).ToList();
+
+        // Update the player cards with the filtered players
+        await UpdatePlayerCards(filteredPlayers);
+    }
+
+
+
+
+        private async Task UpdatePlayerCards(List<Jugador> players)
         {
             var wrapPanel = CardsContainer;
             wrapPanel.Children.Clear();
@@ -177,17 +173,15 @@ namespace Basket.Visual
             }
         }
 
-        // Clear all filters and reload the player cards
         private void ClearFiltersButton_Click(object sender, RoutedEventArgs e)
         {
-            NameFilter.Text = "";
-            TeamFilter.SelectedIndex = -1;
-            NumberFilter.Text = "";
-            CityFilter.SelectedIndex = -1;
+            NameFilter.SelectedIndex = 0;
+            TeamFilter.SelectedIndex = 0;
+            NumberFilter.SelectedIndex = 0;
+            CityFilter.SelectedIndex = 0;
             LoadPlayerCards();
         }
 
-        // Handle the player creation event
         private async void OnPlayerCreated(Jugador newJugador)
         {
             var wrapPanel = CardsContainer;
@@ -207,7 +201,6 @@ namespace Basket.Visual
             wrapPanel.Children.Add(card);
         }
 
-        // Open the player creation dialog
         private void CreatePlayerButton_OnClick(object sender, RoutedEventArgs e)
         {
             var createPlayer = new CreatePlayer();
