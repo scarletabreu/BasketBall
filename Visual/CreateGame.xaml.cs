@@ -8,7 +8,7 @@ namespace Basket.Visual
     public partial class CreateGame
     {
         private  readonly Nba? _nbaController;
-        private List<EstadisticaJuego> _estadisticaJuegos;
+        private List<EstadisticaJuego> _estadisticaJuegos = new List<EstadisticaJuego>();
 
         // Event to notify when a new game is added
         public Action<Juego>? GameAdded { get; set; }
@@ -190,7 +190,8 @@ namespace Basket.Visual
                 Console.WriteLine(LocalTeam.SelectedItem.ToString());
                 if (gameStat.ShowDialog() == true)
                 {
-                    _estadisticaJuegos.AddRange(gameStat.GetEstadisticaJuegos());
+                    var estjues = gameStat.GetEstadisticaJuegos();
+                    _estadisticaJuegos.AddRange(estjues);
                 }
             }
         }
@@ -205,7 +206,8 @@ namespace Basket.Visual
                 gameStat.SetJugadores(jugadores);
                 if (gameStat.ShowDialog() == true)
                 {
-                    _estadisticaJuegos.AddRange(gameStat.GetEstadisticaJuegos());
+                    var estjues = gameStat.GetEstadisticaJuegos();
+                    _estadisticaJuegos.AddRange(estjues);
                 }
             }
         }

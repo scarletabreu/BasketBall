@@ -86,7 +86,7 @@ public partial class GameDetails
             var resultPopup = new Window
             {
                 Title = "Stored Procedure Result",
-                Width = 837,
+                Width = 1000,
                 Height = 525,
                 Content = new ScrollViewer
                 {
@@ -120,10 +120,10 @@ public partial class GameDetails
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
 
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("ScarletConnection");
         if (string.IsNullOrEmpty(connectionString))
         {
-            throw new InvalidOperationException("Connection string 'DefaultConnection' not found in appsettings.json.");
+            throw new InvalidOperationException("Connection string 'ScarletConnection' not found in appsettings.json.");
         }
 
         await using var connection = new SqlConnection(connectionString);
