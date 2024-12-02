@@ -31,7 +31,6 @@ namespace Basket.Visual
                 MessageBox.Show($"Error al cargar juegos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
-            ListaJuego.ItemsSource = Juegos;
         }
         
         public void LoadGames()
