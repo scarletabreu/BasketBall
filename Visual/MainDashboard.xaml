@@ -145,16 +145,21 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Games List -->
                 <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="20">
                     <StackPanel>
-                        <TextBlock Text="Lista de Juegos" FontSize="16" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,10"/>
-                        <ListView BorderThickness="0">
-                            <ListViewItem>Game 1</ListViewItem>
-                            <ListViewItem>Game 2</ListViewItem>
-                        </ListView>
+                        <TextBlock Text="Lista de Juegos" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="0,0,0,10"/>
+                        <ListBox x:Name="ListaJuego">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Descripcion}" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
                 </Border>
+
 
                 <!-- Statistics Cards -->
                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
