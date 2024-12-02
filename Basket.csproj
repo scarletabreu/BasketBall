@@ -26,4 +26,10 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Visual\PointsStatisticsDialog.cs">
+        <DependentUpon>PointStatisticsDialog.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

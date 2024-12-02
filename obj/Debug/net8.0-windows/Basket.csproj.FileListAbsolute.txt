@@ -208,3 +208,7 @@ C:\Users\Scarlet\Downloads\LP C#\Basket\bin\Debug\net8.0-windows\runtimes\win-x6
 C:\Users\Scarlet\Downloads\LP C#\Basket\bin\Debug\net8.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\Scarlet\Downloads\LP C#\Basket\bin\Debug\net8.0-windows\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\Scarlet\Downloads\LP C#\Basket\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CityDetails.baml
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CityDetails.g.cs
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CreateCity.baml
+C:\Users\Scarlet\Downloads\LP C#\Basket\obj\Debug\net8.0-windows\Visual\CreateCity.g.cs

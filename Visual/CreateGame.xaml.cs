@@ -32,11 +32,18 @@ namespace Basket.Visual
             try
             {
                 var teams = await _nbaController.GetAllEntitiesAsync<Equipo>();
+
+                // Add the teams to both the LocalTeam and VisitorTeam ComboBoxes
                 foreach (var team in teams)
                 {
-                    var comboBoxItem = new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() };
-                    LocalTeam.Items.Add(comboBoxItem);
-                    VisitorTeam.Items.Add(comboBoxItem);
+                    var localComboBoxItem = new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() };
+                    var visitorComboBoxItem = new ComboBoxItem { Content = team.GetNombre(), Tag = team.GetCodEquipo() };
+
+                    // Add to LocalTeam ComboBox
+                    LocalTeam.Items.Add(localComboBoxItem);
+
+                    // Add to VisitorTeam ComboBox
+                    VisitorTeam.Items.Add(visitorComboBoxItem);
                 }
             }
             catch (Exception ex)
@@ -44,6 +51,7 @@ namespace Basket.Visual
                 MessageBox.Show($"Error loading teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         // Save button click handler
         private async void Save_Click(object sender, RoutedEventArgs e)
@@ -89,27 +97,40 @@ namespace Basket.Visual
                 MessageBox.Show("Por favor, selecciona una fecha válida.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            
+            var cantJuegos = (await _nbaController.GetAllEntitiesAsync<Juego>()).Count + 1;
 
             // Create game object
-            var game = new Juego(Guid.NewGuid().ToString(), description, localTeamId, visitorTeamId, date);
-
             try
             {
-                await _nbaController.AddEntityAsync(game);
-                GameAdded?.Invoke(game);
+                // Create player object
+                var juego = new Juego(
+                    "JU" + cantJuegos.ToString("D3"),
+                    description,
+                    localTeamId,
+                    visitorTeamId,
+                    date
+                );
 
-                MessageBox.Show($"Juego creado correctamente:\n\n" +
-                                $"Descripción: {description}\n" +
-                                $"Local: {await GetTeamNameById(localTeamId)}\n" +
-                                $"Visitante: {await GetTeamNameById(visitorTeamId)}\n" +
-                                $"Fecha: {date:dd/MM/yyyy}",
-                                "Información", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Save player
+                await _nbaController.AddEntityAsync(juego);
 
+                MessageBox.Show("Juego guardado con éxito.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                GameAdded?.Invoke(juego);
                 Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al guardar el juego: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var errorMessage = $"Error al guardar el juego: {ex.Message}";
+
+                // Check if there is an InnerException and add it to the error message
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\nInner Exception: {ex.InnerException.Message}";
+                }
+
+                MessageBox.Show(errorMessage, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -117,16 +138,6 @@ namespace Basket.Visual
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        // Get the team name asynchronously
-        private async Task<string> GetTeamNameById(string teamId)
-        {
-            if (_nbaController == null) return "Sin equipo";
-
-            var teams = await _nbaController.GetAllEntitiesAsync<Equipo>();
-            var team = teams.FirstOrDefault(t => t.GetCodEquipo() == teamId);
-            return team?.GetNombre() ?? "Sin equipo";
         }
     }
 }
