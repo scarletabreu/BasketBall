@@ -3583,19 +3583,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Usuario\\.nuget\\packages\\": {}
+    "C:\\Users\\Scarlet\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Usuario\\RiderProjects\\BasketBall\\Basket.csproj",
+      "projectUniqueName": "C:\\Users\\Scarlet\\Downloads\\LP C#\\Basket\\Basket.csproj",
       "projectName": "Basket",
-      "projectPath": "C:\\Users\\Usuario\\RiderProjects\\BasketBall\\Basket.csproj",
-      "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Usuario\\RiderProjects\\BasketBall\\obj\\",
+      "projectPath": "C:\\Users\\Scarlet\\Downloads\\LP C#\\Basket\\Basket.csproj",
+      "packagesPath": "C:\\Users\\Scarlet\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Scarlet\\Downloads\\LP C#\\Basket\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
-        "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Scarlet\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows"
@@ -3613,6 +3614,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3667,7 +3673,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\Usuario\\.dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\Scarlet\\.dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   },

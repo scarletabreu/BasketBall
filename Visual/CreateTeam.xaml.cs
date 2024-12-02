@@ -32,11 +32,9 @@ namespace Basket.Visual
 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
-            // Get team name and selected city
             var teamName = TeamName.Text.Trim();
             var city = (CityComboBox.SelectedItem as ComboBoxItem)?.Tag as string;
 
-            // Validate input fields
             if (string.IsNullOrWhiteSpace(teamName) || string.IsNullOrWhiteSpace(city))
             {
                 MessageBox.Show("Por favor, completa todos los campos obligatorios.", "Error", MessageBoxButton.OK,
@@ -46,17 +44,14 @@ namespace Basket.Visual
 
             var cantEquipos = (await _nbaController!.GetAllEntitiesAsync<Equipo>()).Count + 1;
 
-            // Create game object
             try
             {
-                // Create player object
                 var equipo = new Equipo(
                     "E-" + cantEquipos.ToString("D3"),
                     teamName,
                     city
                 );
 
-                // Save player
                 await _nbaController.AddEntityAsync(equipo);
 
                 MessageBox.Show("Equipo guardado con éxito.", "Éxito", MessageBoxButton.OK,
@@ -69,7 +64,6 @@ namespace Basket.Visual
             {
                 var errorMessage = $"Error al guardar el equipo: {ex.Message}";
 
-                // Check if there is an InnerException and add it to the error message
                 if (ex.InnerException != null)
                 {
                     errorMessage += $"\nInner Exception: {ex.InnerException.Message}";
@@ -81,7 +75,6 @@ namespace Basket.Visual
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
-            // Close the window without saving
             Close();
         }
     }

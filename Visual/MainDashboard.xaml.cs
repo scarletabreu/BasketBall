@@ -1,14 +1,41 @@
-﻿using System.Windows;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
+using Basket.Classes;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Basket.Visual
 {
     public partial class MainDashboard
     {
-        // Parameterless constructor for WPF
+        public ObservableCollection<Juego> Juegos { get; set; }
         public MainDashboard()
         {
+            Juegos = new ObservableCollection<Juego>();
             InitializeComponent();
+            DataContext = this; 
+            LoadData();
+        }
+        
+        public async void LoadData()
+        {
+            try
+            {
+                var games = await App.NbaInstance?.GetAllEntitiesAsync<Juego>()!;
+                foreach (var game in games)
+                {
+                    Juegos.Add(game);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar juegos: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            
+        }
+        
+        public void LoadGames()
+        {
+            
         }
 
         // Open the PlayerWindow

@@ -112,9 +112,6 @@ namespace Basket.Visual
             }
         }
 
-
-
-
         private async Task UpdateGameCards(List<Juego> games)
         {
             try

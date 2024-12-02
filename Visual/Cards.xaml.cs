@@ -10,21 +10,18 @@ public partial class Cards : UserControl
         InitializeComponent();
     }
 
-    // Propiedades para el encabezado
     public string Heading
     {
         get { return HeadingText.Text; }
         set { HeadingText.Text = value; }
     }
 
-    // Propiedades para la descripción
     public string Description
     {
         get { return DescriptionText.Text; }
         set { DescriptionText.Text = value; }
     }
 
-    // Propiedades para el texto del botón
     public string? ActionButtonText
     {
         get { return ActionButton.Content.ToString(); }

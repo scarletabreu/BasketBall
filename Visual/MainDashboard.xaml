@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="BasketBall" WindowState="Maximized"
         Background="#F5F6FA">
@@ -72,7 +71,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,20,0,40" HorizontalAlignment="Center">
-                    <Image Source="pack://application:,,,/Resources/500311.PNG" Width="80" Height="80"/>
+                    <!-- SVG como imagen -->
+                    <Image Source="C:\\Users\\Scarlet\\Downloads\\Basket.png" Width="80" Height="80"/>
                     <TextBlock Text="Bienvenido A" FontSize="20" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                     <TextBlock Text="HoopStats" FontSize="14" Foreground="#666666" HorizontalAlignment="Center"/>
                 </StackPanel>
@@ -97,88 +97,22 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <!-- Header with Tabs -->
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,20">
-                <TextBlock Text="Diaria" Margin="10,0" Foreground="#666666"/>
-                <TextBlock Text="Semanal" Margin="10,0" Foreground="#666666"/>
-                <TextBlock Text="Mensual" Margin="10,0" Foreground="#DB783E"/>
-                <TextBlock Text="Anual" Margin="10,0" Foreground="#666666"/>
-            </StackPanel>
-
-            <!-- Chart Section -->
-            <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
-                <Grid Height="300">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
-                        <StackPanel>
-                            <TextBlock Text="Equipos" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="Ganancias del Mes Actual" FontSize="12" Foreground="#666666"/>
-                        </StackPanel>
-                        <StackPanel Margin="40,0,0,0">
-                            <TextBlock Text="Cantidad" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Text="Ventas del Mes Actual" FontSize="12" Foreground="#666666"/>
-                        </StackPanel>
-                    </StackPanel>
-
-                    <!-- Chart placeholder -->
-                    <lvc:CartesianChart Grid.Row="2" Height="200" Margin="0,20,0,0">
-                        <lvc:CartesianChart.Series>
-                            <lvc:LineSeries Values="10,13,20,15,18,25,28,20" Stroke="#DB783E" Fill="#DB783E" />
-                            <lvc:LineSeries Values="15,10,15,20,25,20,15,23" Stroke="#F2E3D8" Fill="#F2E3D8" />
-                        </lvc:CartesianChart.Series>
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Labels="Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic" />
-                        </lvc:CartesianChart.AxisX>
-                    </lvc:CartesianChart>
-                </Grid>
-            </Border>
-
-            <!-- Bottom Section -->
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Games List -->
-                <Border Grid.Column="0" Background="White" CornerRadius="8" Margin="0,0,10,0" Padding="20">
-                    <StackPanel>
-                        <TextBlock Text="Lista de Juegos" FontSize="16" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,10"/>
-                        <ListView BorderThickness="0">
-                            <ListViewItem>Game 1</ListViewItem>
-                            <ListViewItem>Game 2</ListViewItem>
-                        </ListView>
-                    </StackPanel>
+                <!-- Full Show Picture -->
+                <!-- Full Show Picture -->
+                <Border Grid.Row="1" Background="White" CornerRadius="8" Padding="20">
+                    <Image Source="C:\\Users\\Scarlet\\Downloads\\photo.jpg" 
+                           Stretch="UniformToFill" 
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch"/>
                 </Border>
 
-                <!-- Statistics Cards -->
-                <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,10">
-                        <StackPanel>
-                            <TextBlock Text="Jugador Con Más Puntos" FontSize="14" Foreground="#666666"/>
-                            <TextBlock x:Name="PlayerName" Text="PlayerName" FontSize="24" Foreground="#FF69B4"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,10">
-                        <StackPanel>
-                            <TextBlock Text="Equipo Con Más Juegos Ganados" FontSize="14" Foreground="#666666"/>
-                            <TextBlock x:Name="TeamName" Text="TeamName" FontSize="24" Foreground="#8A2BE2"/>
-                        </StackPanel>
-                    </Border>
-
-                    <Border Background="White" CornerRadius="8" Padding="20">
-                        <StackPanel>
-                            <TextBlock Text="Juegos Actuales" FontSize="14" Foreground="#666666"/>
-                            <TextBlock x:Name="GameName" Text="Games" FontSize="24" Foreground="#FFD700"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
             </Grid>
         </Grid>
     </Grid>
