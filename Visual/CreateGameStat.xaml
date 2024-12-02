@@ -1,0 +1,194 @@
+﻿<Window x:Class="Basket.Visual.CreateGameStat"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Registro de Puntos" Height="750" Width="900">
+    <Grid Background="#f5f7fa">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Registro de Puntos" FontSize="32" FontWeight="Bold" 
+                   Margin="30,30,30,20" Foreground="Black" HorizontalAlignment="Center" />
+
+        <!-- Form Content -->
+        <Grid Grid.Row="1" Margin="30,0,30,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Player Lists for Points -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+                <!-- 2-Point Section -->
+                <StackPanel Margin="0,0,20,0">
+                    <TextBlock Text="Puntos de Dos" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+                    <ListBox x:Name="TwoPointPlayersListBox" 
+                             HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch"
+                             Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                    <TextBox Text="{Binding TwoPointScore, Mode=TwoWay}" Width="50" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <!-- 3-Point Section -->
+                <StackPanel Margin="0,0,20,0">
+                    <TextBlock Text="Puntos de Tres" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+                    <ListBox x:Name="ThreePointPlayersListBox" 
+                             HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch"
+                             Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                    <TextBox Text="{Binding ThreePointScore, Mode=TwoWay}" Width="50" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <!-- 1-Point Section -->
+                <StackPanel>
+                    <TextBlock Text="Puntos de Uno" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+                    <ListBox x:Name="OnePointPlayersListBox" 
+                             HorizontalAlignment="Stretch" 
+                             VerticalAlignment="Stretch"
+                             Height="150">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                    <TextBox Text="{Binding OnePointScore, Mode=TwoWay}" Width="50" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Additional Stats Sections -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                    <!-- Assists Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Asistencias" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="AssistsPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding Assists, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                    <!-- Rebounds Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Rebotes" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="ReboundsPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding Rebounds, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                    <!-- Steals Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Bolas Robadas" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="StealsPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding Steals, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                    <!-- Personal Fouls Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Faltas Personales" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="PersonalFoulsPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding PersonalFouls, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                    <!-- Technical Fouls Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Faltas Técnicas" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="TechnicalFoulsPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding TechnicalFouls, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+
+                    <!-- Turnovers Section -->
+                    <StackPanel Margin="0,0,0,10">
+                        <TextBlock Text="Bolas Perdidas" FontWeight="Bold" FontSize="16" Margin="0,0,0,5"/>
+                        <ListBox x:Name="TurnoversPlayersListBox" 
+                                 HorizontalAlignment="Stretch" 
+                                 Height="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Name}" Width="150" Margin="0,0,10,0"/>
+                                        <TextBox Text="{Binding Turnovers, Mode=TwoWay}" Width="50" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancelar" Background="#ff2c2c" Foreground="White" Margin="0,0,15,0" Click="Cancel_Click"/>
+                <Button Content="Guardar" Background="#007ACC" Foreground="White" Click="Save_Click"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

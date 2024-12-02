@@ -313,13 +313,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Puntos" 
+                        <TextBlock Text="EstadisticaJuegos" 
                                  VerticalAlignment="Center"/>
                         <TextBox Grid.Column="1" 
                                 x:Name="LocalPoints" 
                                 HorizontalAlignment="Right"/>
                         <Button Grid.Column="2"
                                 x:Name="LocalPointsButton"
+                                Click="LocalPointsButton_OnClick"
                                 Style="{StaticResource ArrowButton}"/>
                     </Grid>
 
@@ -329,14 +330,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Faltas" 
-                                 VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" 
-                                x:Name="LocalFouls" 
-                                HorizontalAlignment="Right"/>
-                        <Button Grid.Column="2" 
-                                x:Name="LocalFoulsButton"
-                                Style="{StaticResource ArrowButton}"/>
                     </Grid>
 
                     <Grid>
@@ -345,14 +338,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Otro" 
-                                 VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" 
-                                x:Name="LocalOther" 
-                                HorizontalAlignment="Right"/>
-                        <Button Grid.Column="2" 
-                                x:Name="LocalOtherButton"
-                                Style="{StaticResource ArrowButton}"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>
@@ -368,13 +353,14 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Puntos" 
+                        <TextBlock Text="EstadisticasJuego" 
                                  VerticalAlignment="Center"/>
                         <TextBox Grid.Column="1" 
                                 x:Name="VisitorPoints" 
                                 HorizontalAlignment="Right"/>
                         <Button Grid.Column="2" 
                                 x:Name="VisitorPointsButton"
+                                Click="VisitorPointsButton_OnClick"
                                 Style="{StaticResource ArrowButton}"/>
                     </Grid>
 
@@ -384,14 +370,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Faltas" 
-                                 VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" 
-                                x:Name="VisitorFouls" 
-                                HorizontalAlignment="Right"/>
-                        <Button Grid.Column="2" 
-                                x:Name="VisitorFoulsButton"
-                                Style="{StaticResource ArrowButton}"/>
                     </Grid>
 
                     <Grid>
@@ -400,14 +378,6 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Otro" 
-                                 VerticalAlignment="Center"/>
-                        <TextBox Grid.Column="1" 
-                                x:Name="VisitorOther" 
-                                HorizontalAlignment="Right"/>
-                        <Button Grid.Column="2" 
-                                x:Name="VisitorOtherButton"
-                                Style="{StaticResource ArrowButton}"/>
                     </Grid>
                 </StackPanel>
             </GroupBox>

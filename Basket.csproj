@@ -32,4 +32,12 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Page Update="Visual\CreateGameStat.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
 </Project>

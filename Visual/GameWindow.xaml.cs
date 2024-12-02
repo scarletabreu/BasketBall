@@ -160,7 +160,7 @@ namespace Basket.Visual
         {
             var gameDetails = new GameDetails
             {
-                Header = $"{game.GetDescripcion()}",
+                Header = $"{game.GetCodJuego()}",
                 Initials = $"{(await GetEquipoNombreByCodAsync(game.GetEquipo1()))[0]} vs {(await GetEquipoNombreByCodAsync(game.GetEquipo2()))[0]}",
                 LocalTeam = await GetEquipoNombreByCodAsync(game.GetEquipo1()),
                 LocalTeamInfo = await GetEquipoNombreByCodAsync(game.GetEquipo1()),
@@ -177,7 +177,6 @@ namespace Basket.Visual
                 Content = gameDetails,
                 SizeToContent = SizeToContent.WidthAndHeight
             };
-
             gameDetailsWindow.ShowDialog();
         }
 
